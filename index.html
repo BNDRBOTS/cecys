@@ -1,0 +1,1843 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cecy Stays — Distinctive Short-Term Rentals</title>
+  <meta name="description" content="A curated collection of short-term rentals near Downtown. Shop pods, tiny homes, container homes, campers, and private rooms — each one considered.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Figtree:ital,wght@0,300;0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+
+  <style>
+    /* =============================================
+       1. ROOT TOKENS
+    ============================================= */
+    :root {
+      --col-surface:          oklch(97.5% 0.015 72);
+      --col-surface-card:     oklch(93%   0.02  68);
+      --col-surface-dark:     oklch(13%   0.025 38);
+      --col-primary:          oklch(52%   0.13  34);
+      --col-primary-hover:    oklch(46%   0.13  34);
+      --col-accent:           oklch(68%   0.09  56);
+      --col-text-primary:     oklch(17%   0.025 40);
+      --col-text-muted:       oklch(52%   0.03  42);
+      --col-border:           oklch(87%   0.03  68);
+      --col-white:            oklch(99%   0.005 60);
+      /* Hero tile colors — tokenised */
+      --col-tile-pods:        oklch(18%   0.025 40);
+      --col-tile-rooms:       oklch(52%   0.13  34);
+      --col-tile-container:   oklch(40%   0.07  215);
+
+      --ff-display: 'Playfair Display', Georgia, serif;
+      --ff-body:    'Figtree', sans-serif;
+
+      --fs-display:  clamp(3.4rem, 6.5vw, 6.25rem);
+      --fs-hero-sub: clamp(1rem, 2.2vw, 1.2rem);
+      --fs-h2:       clamp(1.75rem, 3vw, 2.75rem);
+      --fs-h3:       clamp(1.2rem, 2vw, 1.65rem);
+      --fs-body:     1rem;
+      --fs-sm:       0.875rem;
+      --fs-label:    0.7rem;
+
+      /* Spacing — 8px grid */
+      --sp-1:  0.5rem;
+      --sp-2:  1rem;
+      --sp-3:  1.5rem;
+      --sp-4:  2rem;
+      --sp-6:  3rem;
+      --sp-8:  4rem;
+      --sp-12: 6rem;
+      --sp-16: 8rem;
+      --sp-section: clamp(5rem, 10vw, 9rem);
+      --sp-gutter:  clamp(1.5rem, 7vw, 7rem);
+
+      /* Nav height — single token, referenced everywhere */
+      --nav-h: 68px;
+
+      --r-sm:   6px;
+      --r-md:   14px;
+      --r-lg:   28px;
+      --r-pill: 999px;
+
+      --tr-fast: 0.18s ease;
+      --tr-mid:  0.32s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      --tr-slow: 0.55s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+
+    /* =============================================
+       2. RESET
+    ============================================= */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html {
+      scroll-behavior: smooth;
+      /* clip: does NOT create a scroll container — child horizontal scrolls are unaffected (iOS Safari fix) */
+      overflow-x: clip;
+    }
+
+    body {
+      font-family: var(--ff-body);
+      font-size: var(--fs-body);
+      line-height: 1.7;
+      color: var(--col-text-primary);
+      background-color: var(--col-surface);
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    img { display: block; max-width: 100%; }
+    a   { color: inherit; text-decoration: none; }
+    ul  { list-style: none; }
+
+    button {
+      cursor: pointer;
+      border: none;
+      background: none;
+      font-family: inherit;
+    }
+
+    /* Grain texture overlay */
+    body::after {
+      content: '';
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 9998;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='0.05'/%3E%3C/svg%3E");
+      opacity: 0.03;
+    }
+
+    /* =============================================
+       3. TYPOGRAPHY
+    ============================================= */
+    .t-display {
+      font-family: var(--ff-display);
+      font-size: var(--fs-display);
+      font-weight: 700;
+      line-height: 1.04;
+      letter-spacing: -0.025em;
+    }
+
+    .t-h2 {
+      font-family: var(--ff-display);
+      font-size: var(--fs-h2);
+      font-weight: 700;
+      line-height: 1.15;
+      letter-spacing: -0.02em;
+    }
+
+    .t-label {
+      font-family: var(--ff-body);
+      font-size: var(--fs-label);
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+    }
+
+    .t-body-lg {
+      font-size: var(--fs-hero-sub);
+      font-weight: 400;
+      line-height: 1.7;
+    }
+
+    em { font-style: italic; }
+
+    /* =============================================
+       4. LAYOUT UTILITIES
+    ============================================= */
+    .section { padding: var(--sp-section) var(--sp-gutter); }
+
+    .section-inner { max-width: 1380px; margin: 0 auto; }
+
+    .eyebrow {
+      color: var(--col-primary);
+      display: block;
+      margin-bottom: var(--sp-3);
+    }
+
+    /* =============================================
+       5. NAVIGATION — MOBILE-FIRST BASE
+    ============================================= */
+    .nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 200;
+      padding: 0 var(--sp-gutter);
+      height: var(--nav-h);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      transition: background-color var(--tr-mid), backdrop-filter var(--tr-mid), box-shadow var(--tr-mid);
+    }
+
+    .nav.scrolled {
+      background-color: oklch(97.5% 0.015 72 / 0.94);
+      backdrop-filter: blur(18px) saturate(140%);
+      -webkit-backdrop-filter: blur(18px) saturate(140%);
+      box-shadow: 0 1px 0 var(--col-border);
+    }
+
+    .nav-logo {
+      font-family: var(--ff-display);
+      font-size: 1.3rem;
+      font-weight: 700;
+      letter-spacing: -0.025em;
+      color: var(--col-text-primary);
+      display: flex;
+      align-items: baseline;
+      gap: 0.15em;
+    }
+
+    .nav-logo-mark { color: var(--col-primary); font-style: italic; }
+
+    /* Nav links: HIDDEN at mobile base; shown at 768px+ */
+    .nav-links { display: none; }
+
+    .nav-links a {
+      font-size: var(--fs-sm);
+      font-weight: 500;
+      color: var(--col-text-muted);
+      position: relative;
+      transition: color var(--tr-fast);
+    }
+
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      bottom: -2px; left: 0;
+      width: 0; height: 1px;
+      background: var(--col-primary);
+      transition: width var(--tr-mid);
+    }
+
+    .nav-links a:hover { color: var(--col-text-primary); }
+    .nav-links a:hover::after { width: 100%; }
+
+    /* Right cluster: CTA pill + hamburger (CTA always visible) */
+    .nav-right {
+      display: flex;
+      align-items: center;
+      gap: var(--sp-2);
+    }
+
+    /* CTA — no !important needed; not inside .nav-links anymore */
+    .nav-cta {
+      font-family: var(--ff-body);
+      font-size: var(--fs-sm);
+      font-weight: 600;
+      color: var(--col-white);
+      background: var(--col-primary);
+      padding: 0.5rem 1.35rem;
+      border-radius: var(--r-pill);
+      display: inline-flex;
+      align-items: center;
+      min-height: 44px;
+      transition: background-color var(--tr-fast), transform var(--tr-fast);
+    }
+
+    .nav-cta:hover {
+      background-color: var(--col-primary-hover);
+      transform: translateY(-1px);
+      color: var(--col-white);
+    }
+
+    /* Hamburger: SHOWN at mobile base; hidden at 768px+ */
+    .nav-hamburger {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+      width: 44px;
+      height: 44px;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .nav-hamburger span {
+      display: block;
+      width: 22px;
+      height: 2px;
+      background: var(--col-text-primary);
+      border-radius: 2px;
+      transition: transform var(--tr-mid), opacity var(--tr-fast);
+    }
+
+    /* Hamburger → X animation */
+    .nav-hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+    .nav-hamburger.open span:nth-child(2) { opacity: 0; transform: scaleX(0); }
+    .nav-hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+    /* =============================================
+       6. MOBILE DRAWER
+    ============================================= */
+    .nav-drawer {
+      position: fixed;
+      top: var(--nav-h);
+      left: 0; right: 0;
+      background: var(--col-surface);
+      border-bottom: 1px solid var(--col-border);
+      padding: var(--sp-4) var(--sp-gutter) var(--sp-6);
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      transform: translateY(-110%);
+      opacity: 0;
+      pointer-events: none;
+      transition: transform var(--tr-mid), opacity var(--tr-mid);
+      z-index: 150;
+      box-shadow: 0 8px 32px oklch(17% 0.025 40 / 0.1);
+    }
+
+    .nav-drawer.open {
+      transform: translateY(0);
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .nav-drawer-link {
+      font-size: 1.1rem;
+      font-weight: 500;
+      color: var(--col-text-primary);
+      padding: var(--sp-3) 0;
+      border-bottom: 1px solid var(--col-border);
+      transition: color var(--tr-fast), padding-left var(--tr-fast);
+    }
+
+    .nav-drawer-link:hover {
+      color: var(--col-primary);
+      padding-left: var(--sp-2);
+    }
+
+    .nav-drawer-cta {
+      margin-top: var(--sp-4);
+      align-self: flex-start;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--ff-body);
+      font-size: var(--fs-sm);
+      font-weight: 600;
+      color: var(--col-white);
+      background: var(--col-primary);
+      padding: 0.85rem 2rem;
+      border-radius: var(--r-pill);
+      min-height: 44px;
+      transition: background-color var(--tr-fast);
+    }
+
+    .nav-drawer-cta:hover { background-color: var(--col-primary-hover); }
+
+    /* =============================================
+       7. HERO — MOBILE-FIRST BASE (block/single-col)
+    ============================================= */
+    .hero {
+      display: block;
+      padding-top: var(--nav-h);
+      position: relative;
+      overflow: hidden;
+      background-color: var(--col-surface);
+    }
+
+    .hero-watermark {
+      position: absolute;
+      font-family: var(--ff-display);
+      font-size: clamp(22rem, 50vw, 68rem);
+      font-weight: 700;
+      font-style: italic;
+      line-height: 0.85;
+      color: var(--col-primary);
+      opacity: 0.038;
+      top: -12%; left: -6%;
+      pointer-events: none;
+      user-select: none;
+      z-index: 0;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      /* Uses --sp-gutter so mobile left edge matches all other sections */
+      padding: var(--sp-12) var(--sp-gutter) var(--sp-8);
+    }
+
+    .hero-headline {
+      color: var(--col-text-primary);
+      margin-bottom: var(--sp-4);
+      max-width: 13ch;
+    }
+
+    .hero-sub {
+      color: var(--col-text-muted);
+      max-width: 44ch;
+      margin-bottom: var(--sp-8);
+    }
+
+    .hero-actions {
+      display: flex;
+      gap: var(--sp-3);
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    .hero-stats {
+      display: flex;
+      gap: var(--sp-6);
+      flex-wrap: wrap;
+      margin-top: var(--sp-8);
+      padding-top: var(--sp-6);
+      border-top: 1px solid var(--col-border);
+    }
+
+    .hero-stat-value {
+      font-family: var(--ff-display);
+      font-size: 2.1rem;
+      font-weight: 700;
+      color: var(--col-text-primary);
+      line-height: 1;
+      letter-spacing: -0.03em;
+    }
+
+    .hero-stat-unit {
+      font-family: var(--ff-body);
+      font-size: 1rem;
+      font-weight: 400;
+      color: var(--col-text-muted);
+    }
+
+    .hero-stat-label { color: var(--col-text-muted); margin-top: 0.3rem; }
+
+    /* Visuals: HIDDEN at base, shown at 768px+ */
+    .hero-visuals { display: none; }
+
+    .hero-tile {
+      border-radius: var(--r-lg);
+      overflow: hidden;
+      position: relative;
+      display: flex;
+      align-items: flex-end;
+      padding: var(--sp-3);
+      transition: box-shadow var(--tr-mid);
+      /* transform handled entirely by JS; no CSS transform here to avoid compound conflict */
+    }
+
+    .hero-tile-1 { background: var(--col-tile-pods);      margin-left: -1.5rem; }
+    .hero-tile-2 { background: var(--col-tile-rooms);     margin-left: 2.5rem; margin-right: -0.75rem; }
+    .hero-tile-3 { background: var(--col-tile-container); margin-left: -0.75rem; }
+
+    .hero-tile-type {
+      position: absolute;
+      top: 50%; left: var(--sp-3);
+      transform: translateY(-50%) rotate(-90deg);
+      transform-origin: center center;
+      font-family: var(--ff-display);
+      font-style: italic;
+      font-size: clamp(1.4rem, 2.8vw, 2.2rem);
+      font-weight: 400;
+      color: white;
+      opacity: 0.15;
+      white-space: nowrap;
+      pointer-events: none;
+      user-select: none;
+    }
+
+    .hero-tile-rating {
+      position: absolute;
+      top: var(--sp-2); right: var(--sp-2);
+      background: oklch(99% 0.005 60 / 0.14);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border: 1px solid oklch(99% 0.005 60 / 0.22);
+      padding: 0.3rem 0.7rem;
+      border-radius: var(--r-pill);
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: white;
+    }
+
+    .hero-tile-label {
+      font-family: var(--ff-body);
+      font-size: var(--fs-label);
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      /* WCAG fix: explicit high-contrast color replaces opacity fade */
+      color: oklch(96% 0.01 60 / 0.88);
+      position: relative;
+      z-index: 1;
+    }
+
+    /* =============================================
+       8. BUTTONS
+    ============================================= */
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5em;
+      font-family: var(--ff-body);
+      font-size: var(--fs-sm);
+      font-weight: 600;
+      color: var(--col-white);
+      background: var(--col-text-primary);
+      padding: 0.9rem 2rem;
+      border-radius: var(--r-pill);
+      transition: background-color var(--tr-fast), transform var(--tr-fast), box-shadow var(--tr-fast);
+      letter-spacing: 0.01em;
+      min-height: 44px;
+    }
+
+    .btn-primary:hover {
+      background-color: var(--col-primary);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px oklch(52% 0.13 34 / 0.3);
+    }
+
+    .btn-primary svg { transition: transform var(--tr-fast); }
+    .btn-primary:hover svg { transform: translateX(3px); }
+
+    .btn-ghost {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5em;
+      font-family: var(--ff-body);
+      font-size: var(--fs-sm);
+      font-weight: 500;
+      color: var(--col-text-muted);
+      padding: 0.9rem 0;
+      transition: color var(--tr-fast);
+      min-height: 44px;
+    }
+
+    .btn-ghost:hover { color: var(--col-text-primary); }
+    .btn-ghost svg { transition: transform var(--tr-fast); }
+    .btn-ghost:hover svg { transform: translateX(3px); }
+
+    .btn-white {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5em;
+      font-family: var(--ff-body);
+      font-size: var(--fs-sm);
+      font-weight: 600;
+      color: var(--col-primary);
+      background: var(--col-white);
+      padding: 0.9rem 2rem;
+      border-radius: var(--r-pill);
+      transition: transform var(--tr-fast), box-shadow var(--tr-fast);
+      min-height: 44px;
+    }
+
+    .btn-white:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 28px oklch(15% 0.025 40 / 0.22);
+    }
+
+    .btn-white svg { transition: transform var(--tr-fast); }
+    .btn-white:hover svg { transform: translateX(3px); }
+
+    .btn-white-outline {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5em;
+      font-family: var(--ff-body);
+      font-size: var(--fs-sm);
+      font-weight: 500;
+      color: var(--col-white);
+      border: 1px solid oklch(99% 0.005 60 / 0.38);
+      padding: 0.9rem 2rem;
+      border-radius: var(--r-pill);
+      transition: background-color var(--tr-fast), transform var(--tr-fast);
+      min-height: 44px;
+    }
+
+    .btn-white-outline:hover {
+      background: oklch(99% 0.005 60 / 0.1);
+      transform: translateY(-1px);
+    }
+
+    /* =============================================
+       9. COLLECTION
+    ============================================= */
+    .collection { background: var(--col-surface-card); }
+
+    /* Base: column layout for header */
+    .collection-header {
+      display: flex;
+      flex-direction: column;
+      gap: var(--sp-4);
+      margin-bottom: var(--sp-8);
+    }
+
+    .collection-header-text .t-h2 { margin-top: var(--sp-2); }
+
+    .collection-view-all {
+      font-size: var(--fs-sm);
+      font-weight: 600;
+      color: var(--col-primary);
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4em;
+      white-space: nowrap;
+      align-self: flex-start;
+      transition: gap var(--tr-fast), color var(--tr-fast);
+    }
+
+    .collection-view-all:hover { gap: 0.8em; color: var(--col-primary-hover); }
+    .collection-view-all svg { transition: transform var(--tr-fast); }
+    .collection-view-all:hover svg { transform: translateX(2px); }
+
+    /* ---- 3D Carousel ---- */
+    .carousel-wrapper { position: relative; }
+
+    /* Stage: relative container, tall enough for tallest card (460px) + float buffer */
+    .carousel-stage {
+      position: relative;
+      height: 500px;
+      overflow: visible;   /* adjacent cards are allowed to peek at sides */
+    }
+
+    /* Arrow buttons */
+    .carousel-controls {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: var(--sp-4);
+      margin-top: var(--sp-6);
+    }
+
+    .carousel-btn {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: var(--col-surface);
+      border: 1px solid var(--col-border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      flex-shrink: 0;
+      /* Only shadow transitions from CSS — transform handled entirely by JS */
+      transition: background-color var(--tr-fast), border-color var(--tr-fast), box-shadow var(--tr-fast);
+      box-shadow: 0 2px 12px oklch(17% 0.025 40 / 0.08);
+    }
+
+    .carousel-btn svg { color: var(--col-text-muted); transition: color var(--tr-fast); }
+
+    .carousel-btn:hover {
+      background: var(--col-primary);
+      border-color: var(--col-primary);
+      box-shadow: 0 6px 20px oklch(52% 0.13 34 / 0.3);
+    }
+
+    .carousel-btn:hover svg { color: var(--col-white); }
+
+    /* Dot strip */
+    .carousel-dots { display: flex; align-items: center; gap: 6px; }
+
+    .carousel-dot {
+      height: 8px;
+      width: 8px;
+      border-radius: 50%;
+      background: var(--col-border);
+      border: none;
+      cursor: pointer;
+      padding: 0;
+      transition: background-color var(--tr-mid), width var(--tr-mid), border-radius var(--tr-mid);
+    }
+
+    .carousel-dot.active {
+      background: var(--col-primary);
+      width: 22px;
+      border-radius: 4px;
+    }
+
+    /* ---- Prop card: now absolutely positioned inside .carousel-stage ---- */
+    .prop-card {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 295px;
+      border-radius: var(--r-lg);
+      overflow: hidden;
+      /* JS controls all transforms — only shadow transitions by CSS */
+      transition: box-shadow var(--tr-mid);
+      cursor: pointer;
+      will-change: transform, opacity;
+    }
+
+    /* No CSS hover transform — JS manages all card transforms */
+    .prop-card:hover {
+      box-shadow: 0 32px 64px oklch(18% 0.025 40 / 0.2);
+    }
+
+    /* Varied heights — intentional editorial rhythm */
+    .prop-card--rooms     { height: 400px; background: linear-gradient(155deg, oklch(72% 0.08 58), oklch(56% 0.1 40)); }
+    .prop-card--pods      { height: 460px; background: linear-gradient(155deg, oklch(26% 0.03 40), oklch(15% 0.02 38)); }
+    .prop-card--tiny      { height: 380px; background: linear-gradient(155deg, oklch(50% 0.08 222), oklch(34% 0.07 230)); }
+    .prop-card--container { height: 440px; background: linear-gradient(155deg, oklch(45% 0.07 202), oklch(28% 0.05 212)); }
+    .prop-card--camper    { height: 400px; background: linear-gradient(155deg, oklch(59% 0.09 78), oklch(45% 0.1 64)); }
+    .prop-card--shared    { height: 360px; background: linear-gradient(155deg, oklch(73% 0.07 55), oklch(59% 0.09 44)); }
+
+    .prop-card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, oklch(10% 0.02 38 / 0.78) 0%, oklch(10% 0.02 38 / 0.1) 55%, transparent 100%);
+      z-index: 1;
+    }
+
+    .prop-card-watermark {
+      position: absolute;
+      font-family: var(--ff-display);
+      font-style: italic;
+      font-size: 7.5rem;
+      font-weight: 700;
+      color: white;
+      opacity: 0.07;
+      bottom: -0.5rem; right: -0.5rem;
+      line-height: 1;
+      pointer-events: none;
+      user-select: none;
+      z-index: 1;
+    }
+
+    .prop-card-content {
+      position: absolute;
+      inset: 0;
+      padding: var(--sp-4);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      z-index: 2;
+    }
+
+    .prop-card-top { display: flex; justify-content: flex-end; }
+
+    .prop-card-badge {
+      background: oklch(99% 0.005 60 / 0.14);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border: 1px solid oklch(99% 0.005 60 / 0.24);
+      padding: 0.3rem 0.72rem;
+      border-radius: var(--r-pill);
+      font-size: 0.76rem;
+      font-weight: 600;
+      color: white;
+    }
+
+    .prop-card-bottom { color: white; }
+
+    .prop-card-type {
+      font-size: var(--fs-label);
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      /* WCAG fix: explicit color, no opacity fade — was opacity: 0.65 */
+      color: oklch(88% 0.015 60);
+      margin-bottom: var(--sp-1);
+    }
+
+    .prop-card-name {
+      font-family: var(--ff-display);
+      font-size: clamp(1.5rem, 2.2vw, 2rem);
+      font-weight: 700;
+      line-height: 1.1;
+      letter-spacing: -0.02em;
+      margin-bottom: var(--sp-2);
+    }
+
+    .prop-card-desc {
+      font-size: var(--fs-sm);
+      line-height: 1.55;
+      /* WCAG fix: explicit color — was opacity: 0.72 (failed 4.5:1 on terracotta card) */
+      color: oklch(93% 0.01 60);
+      margin-bottom: var(--sp-3);
+    }
+
+    .prop-card-link {
+      font-size: var(--fs-sm);
+      font-weight: 600;
+      color: white;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4em;
+      /* WCAG fix: removed opacity: 0.88 */
+      transition: gap var(--tr-fast);
+    }
+
+    .prop-card-link:hover { gap: 0.75em; opacity: 1; }
+    .prop-card-link svg { transition: transform var(--tr-fast); }
+    .prop-card-link:hover svg { transform: translateX(2px); }
+
+    /* =============================================
+       10. AMENITIES — MOBILE-FIRST
+    ============================================= */
+    .amenities { background: var(--col-surface); }
+
+    /* Base: single-column stacked layout */
+    .amenities-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: var(--sp-8);
+      /* NO margin-top — section padding provides the breathing room */
+    }
+
+    .amenities-headline-col .t-h2 {
+      margin-top: var(--sp-3);
+      margin-bottom: var(--sp-4);
+    }
+
+    .amenities-headline-subtext {
+      color: var(--col-text-muted);
+      max-width: 36ch;
+    }
+
+    /* Base: single-column amenity items */
+    .amenity-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: var(--sp-6);
+      margin-top: var(--sp-6);
+    }
+
+    .amenity-icon { font-size: 1.6rem; line-height: 1; margin-bottom: var(--sp-2); }
+
+    .amenity-name {
+      font-family: var(--ff-display);
+      font-size: 1.05rem;
+      font-weight: 600;
+      color: var(--col-text-primary);
+      letter-spacing: -0.01em;
+      margin-bottom: 0.3rem;
+    }
+
+    .amenity-desc { font-size: var(--fs-sm); color: var(--col-text-muted); line-height: 1.55; }
+
+    /* =============================================
+       11. STANDARDS — MOBILE-FIRST
+    ============================================= */
+    .standards { background: var(--col-surface-dark); color: var(--col-white); }
+
+    .standards .eyebrow { color: var(--col-accent); }
+    .standards .t-h2 { color: var(--col-white); margin-top: var(--sp-2); }
+
+    .standards-intro {
+      color: oklch(90% 0.02 60 / 0.66);
+      max-width: 56ch;
+      margin-top: var(--sp-3);
+      margin-bottom: var(--sp-8);
+    }
+
+    /* Base: single column */
+    .standards-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: var(--sp-8);
+    }
+
+    .standards-cat-label {
+      color: var(--col-accent);
+      margin-bottom: var(--sp-3);
+      padding-bottom: var(--sp-2);
+      border-bottom: 1px solid oklch(90% 0.02 60 / 0.12);
+    }
+
+    .standards-rules { display: flex; flex-direction: column; gap: var(--sp-3); }
+
+    .rule-item { display: flex; gap: 0.875rem; align-items: flex-start; }
+
+    .rule-dot {
+      width: 5px; height: 5px;
+      background: var(--col-primary);
+      border-radius: 50%;
+      margin-top: 0.65em;
+      flex-shrink: 0;
+    }
+
+    .rule-text { font-size: var(--fs-sm); color: oklch(90% 0.02 60 / 0.74); line-height: 1.65; }
+
+    /* =============================================
+       12. ABOUT — MOBILE-FIRST
+    ============================================= */
+    .about { background: var(--col-surface); }
+
+    /* Base: single column */
+    .about-inner {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: var(--sp-6);
+    }
+
+    /* H-1 FIX: position: relative added — absolutely-positioned children
+       (.about-deco-letter, ::after stripe) now correctly contained here */
+    .about-deco {
+      position: relative;
+      height: 260px;
+      border-radius: var(--r-lg);
+      overflow: hidden;
+      background: linear-gradient(145deg, oklch(80% 0.07 60) 0%, oklch(63% 0.11 40) 60%, oklch(46% 0.1 36) 100%);
+    }
+
+    .about-deco-letter {
+      position: absolute;
+      font-family: var(--ff-display);
+      font-style: italic;
+      font-size: clamp(9rem, 18vw, 16rem);
+      font-weight: 700;
+      color: white;
+      opacity: 0.16;
+      bottom: -1.5rem; right: -1rem;
+      line-height: 1;
+      pointer-events: none;
+      user-select: none;
+    }
+
+    /* Accent stripe — also correctly clipped now */
+    .about-deco::after {
+      content: '';
+      position: absolute;
+      top: 0; left: 0;
+      width: 6px; height: 100%;
+      background: oklch(99% 0.005 60 / 0.25);
+    }
+
+    .about-content .t-h2 { margin-top: var(--sp-3); margin-bottom: var(--sp-4); max-width: 20ch; }
+
+    .about-body { color: var(--col-text-muted); max-width: 50ch; }
+    .about-body + .about-body { margin-top: var(--sp-3); }
+    .about-body em { color: var(--col-text-primary); font-weight: 500; }
+    .about-cta { margin-top: var(--sp-8); }
+
+    /* =============================================
+       13. CONNECT — MOBILE-FIRST
+    ============================================= */
+    .connect { background: var(--col-primary); color: var(--col-white); }
+
+    /* Base: stacked column */
+    .connect-inner {
+      display: flex;
+      flex-direction: column;
+      gap: var(--sp-6);
+    }
+
+    /* connect-eyebrow overrides .eyebrow color for the primary-bg section */
+    .connect-eyebrow { color: oklch(99% 0.005 60 / 0.55); }
+    .connect-text .t-h2 { color: var(--col-white); margin-top: var(--sp-2); max-width: 18ch; }
+    .connect-text p { color: oklch(99% 0.005 60 / 0.68); margin-top: var(--sp-3); max-width: 44ch; }
+
+    /* Base: row wrap for easy mobile tap */
+    .connect-actions {
+      display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
+      gap: var(--sp-2);
+      align-items: flex-start;
+    }
+
+    /* =============================================
+       14. FOOTER — MOBILE-FIRST
+    ============================================= */
+    .footer { background: var(--col-text-primary); padding: var(--sp-6) var(--sp-gutter); }
+
+    /* Base: column */
+    .footer-inner {
+      max-width: 1380px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: var(--sp-3);
+    }
+
+    .footer-logo {
+      font-family: var(--ff-display);
+      font-size: 1.1rem;
+      font-weight: 700;
+      letter-spacing: -0.025em;
+      color: var(--col-white);
+      display: flex;
+      align-items: baseline;
+      gap: 0.15em;
+    }
+
+    .footer-logo-mark { color: var(--col-primary); font-style: italic; }
+
+    .footer-links { display: flex; gap: var(--sp-4); align-items: center; flex-wrap: wrap; }
+
+    .footer-links a { font-size: 0.8rem; color: oklch(90% 0.02 60 / 0.42); transition: color var(--tr-fast); }
+    .footer-links a:hover { color: oklch(90% 0.02 60 / 0.78); }
+
+    .footer-legal { font-size: 0.75rem; color: oklch(90% 0.02 60 / 0.32); }
+
+    /* =============================================
+       15. SCROLL REVEAL
+    ============================================= */
+    .reveal {
+      opacity: 0;
+      transform: translateY(28px);
+      transition: opacity var(--tr-slow), transform var(--tr-slow);
+    }
+
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    .reveal-d1 { transition-delay: 0.08s; }
+    .reveal-d2 { transition-delay: 0.16s; }
+    .reveal-d3 { transition-delay: 0.24s; }
+    .reveal-d4 { transition-delay: 0.32s; }
+    .reveal-d5 { transition-delay: 0.40s; }
+
+    /* =============================================
+       16. HERO ENTRY ANIMATIONS
+    ============================================= */
+    .hero-eyebrow  { opacity: 0; animation: fadeUp 0.70s ease forwards; animation-delay: 0.10s; }
+    .hero-headline { opacity: 0; animation: fadeUp 0.85s ease forwards; animation-delay: 0.22s; }
+    .hero-sub      { opacity: 0; animation: fadeUp 0.70s ease forwards; animation-delay: 0.38s; }
+    .hero-actions  { opacity: 0; animation: fadeUp 0.70s ease forwards; animation-delay: 0.52s; }
+    .hero-stats    { opacity: 0; animation: fadeUp 0.70s ease forwards; animation-delay: 0.66s; }
+    .hero-tile-1   { opacity: 0; animation: fadeFromRight 0.90s ease forwards; animation-delay: 0.28s; }
+    .hero-tile-2   { opacity: 0; animation: fadeFromRight 0.90s ease forwards; animation-delay: 0.44s; }
+    .hero-tile-3   { opacity: 0; animation: fadeFromRight 0.90s ease forwards; animation-delay: 0.60s; }
+
+    @keyframes fadeUp       { from { opacity: 0; transform: translateY(22px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes fadeFromRight { from { opacity: 0; transform: translateX(26px); } to { opacity: 1; transform: translateX(0); } }
+
+    /* =============================================
+       17. PREFERS-REDUCED-MOTION
+    ============================================= */
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration:       0.01ms !important;
+        animation-iteration-count: 1     !important;
+        transition-duration:      0.01ms !important;
+        scroll-behavior: auto !important;
+      }
+
+      .reveal,
+      .hero-eyebrow, .hero-headline, .hero-sub,
+      .hero-actions, .hero-stats,
+      .hero-tile-1, .hero-tile-2, .hero-tile-3 {
+        opacity: 1;
+        transform: none;
+        animation: none;
+        transition: none;
+      }
+    }
+
+    /* =============================================
+       18. RESPONSIVE — MIN-WIDTH QUERIES ONLY
+    ============================================= */
+
+    /* 480px: amenity grid → 2 columns */
+    @media (min-width: 480px) {
+      .amenity-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: var(--sp-4) var(--sp-6);
+      }
+    }
+
+    /* 768px: desktop nav, hero grid, tablet section layouts */
+    @media (min-width: 768px) {
+
+      /* Nav: show links, hide hamburger; drawer permanently off */
+      .nav-links { display: flex; align-items: center; gap: var(--sp-6); }
+      .nav-hamburger { display: none; }
+      .nav-drawer { display: none !important; }
+
+      /* Hero: 2-column grid */
+      .hero {
+        display: grid;
+        grid-template-columns: 60fr 40fr;
+        min-height: 100svh;
+      }
+
+      .hero-content {
+        padding: var(--sp-16) var(--sp-6) var(--sp-16) var(--sp-gutter);
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+      }
+
+      /* Hero visuals: restore */
+      .hero-visuals {
+        display: flex;
+        flex-direction: column;
+        gap: var(--sp-3);
+        justify-content: center;
+        padding: var(--sp-12) var(--sp-6) var(--sp-8) var(--sp-2);
+      }
+
+      /* Tablet tile heights */
+      .hero-tile-1 { height: 220px; }
+      .hero-tile-2 { height: 145px; }
+      .hero-tile-3 { height: 175px; }
+
+      /* Collection header: row at 768px+ */
+      .collection-header {
+        flex-direction: row;
+        align-items: flex-end;
+        justify-content: space-between;
+      }
+
+      /* Standards: 2 columns at tablet */
+      .standards-grid { grid-template-columns: 1fr 1fr; gap: var(--sp-8) var(--sp-6); }
+
+      /* About: 2 columns at tablet */
+      .about-inner { grid-template-columns: 1fr 1fr; gap: var(--sp-8); align-items: center; }
+      .about-deco  { height: 380px; }
+
+      /* Footer: row at 768px+ */
+      .footer-inner { flex-direction: row; align-items: center; justify-content: space-between; }
+    }
+
+    /* 1100px: full desktop — final layout expansions */
+    @media (min-width: 1100px) {
+
+      /* Hero: full tile heights */
+      .hero-tile-1 { height: 270px; }
+      .hero-tile-2 { height: 175px; }
+      .hero-tile-3 { height: 210px; }
+
+      /* Amenities: 2-column asymmetric */
+      .amenities-grid { grid-template-columns: 42fr 58fr; gap: var(--sp-16); align-items: start; }
+      .amenity-grid   { margin-top: 0; }
+
+      /* Standards: 3 columns */
+      .standards-grid { grid-template-columns: repeat(3, 1fr); gap: var(--sp-8); }
+
+      /* About: asymmetric 38/62 */
+      .about-inner { grid-template-columns: 38fr 62fr; gap: var(--sp-16); }
+      .about-deco  { height: 500px; }
+
+      /* Connect: side-by-side */
+      .connect-inner {
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+        gap: var(--sp-12);
+      }
+
+      .connect-actions {
+        flex-direction: column;
+        align-items: flex-end;
+        flex-shrink: 0;
+      }
+    }
+
+  </style>
+</head>
+<body>
+
+  <!-- ===========================================
+       NAV
+  =========================================== -->
+  <nav class="nav" id="main-nav" aria-label="Main navigation">
+    <a href="#" class="nav-logo" aria-label="Cecy Stays — home">
+      <span class="nav-logo-mark">C·</span>Cecy Stays
+    </a>
+
+    <!-- Desktop links: clean div, no spurious ARIA roles -->
+    <div class="nav-links">
+      <a href="#collection">Properties</a>
+      <a href="#standards">House Rules</a>
+      <a href="#about">About</a>
+    </div>
+
+    <!-- Right cluster: CTA always visible + hamburger (mobile only) -->
+    <div class="nav-right">
+      <a href="#connect" class="nav-cta">Book a Stay</a>
+      <button
+        class="nav-hamburger"
+        id="nav-hamburger"
+        aria-label="Open navigation menu"
+        aria-expanded="false"
+        aria-controls="nav-drawer"
+      >
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Mobile drawer -->
+  <div
+    class="nav-drawer"
+    id="nav-drawer"
+    role="dialog"
+    aria-label="Navigation menu"
+    aria-hidden="true"
+  >
+    <a href="#collection" class="nav-drawer-link">Properties</a>
+    <a href="#standards"  class="nav-drawer-link">House Rules</a>
+    <a href="#about"      class="nav-drawer-link">About</a>
+    <a href="#connect"    class="nav-drawer-cta">Book a Stay</a>
+  </div>
+
+
+  <!-- ===========================================
+       HERO
+  =========================================== -->
+  <section class="hero" aria-labelledby="hero-headline">
+    <div class="hero-watermark" aria-hidden="true">C</div>
+
+    <div class="hero-content">
+      <p class="t-label eyebrow hero-eyebrow">Short-Term Rentals · Near Downtown</p>
+
+      <h1 class="t-display hero-headline" id="hero-headline">
+        Every stay,<br>its own<br><em>character.</em>
+      </h1>
+
+      <p class="t-body-lg hero-sub">
+        A curated collection near Downtown — private rooms, shop pods, tiny homes, container homes, and campers. Each space was built by someone who wanted to stay there.
+      </p>
+
+      <div class="hero-actions">
+        <a href="#collection" class="btn-primary">
+          Explore Stays
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
+        <a href="https://www.airbnb.com" target="_blank" rel="noopener noreferrer" class="btn-ghost">
+          View on Airbnb
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
+      </div>
+
+      <div class="hero-stats" aria-label="Portfolio highlights">
+        <div class="hero-stat">
+          <div class="hero-stat-value">4.9<span class="hero-stat-unit">★</span></div>
+          <div class="t-label hero-stat-label">Avg. Rating</div>
+        </div>
+        <div class="hero-stat">
+          <div class="hero-stat-value">6</div>
+          <div class="t-label hero-stat-label">Property Types</div>
+        </div>
+        <div class="hero-stat">
+          <div class="hero-stat-value">3<span class="hero-stat-unit">mi</span></div>
+          <div class="t-label hero-stat-label">From Downtown</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="hero-visuals" aria-hidden="true">
+      <div class="hero-tile hero-tile-1">
+        <div class="hero-tile-type">The Shop Pods</div>
+        <div class="hero-tile-rating">&#9733; 4.93</div>
+        <span class="hero-tile-label">Shop Pods</span>
+      </div>
+      <div class="hero-tile hero-tile-2">
+        <div class="hero-tile-rating">&#9733; 4.95</div>
+        <span class="hero-tile-label">Private Rooms</span>
+      </div>
+      <div class="hero-tile hero-tile-3">
+        <div class="hero-tile-rating">&#9733; 4.91</div>
+        <span class="hero-tile-label">Container Homes</span>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ===========================================
+       COLLECTION
+  =========================================== -->
+  <section class="section collection" id="collection" aria-labelledby="collection-heading">
+    <div class="section-inner">
+
+      <div class="collection-header">
+        <div class="collection-header-text">
+          <span class="t-label eyebrow reveal">The Collection</span>
+          <h2 class="t-h2 reveal reveal-d1" id="collection-heading">
+            Every kind of stay.<br>One way of doing it.
+          </h2>
+        </div>
+        <a href="https://www.airbnb.com" target="_blank" rel="noopener noreferrer" class="collection-view-all reveal reveal-d2">
+          All listings on Airbnb
+          <svg width="13" height="13" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
+      </div>
+
+      <div class="carousel-wrapper">
+        <div class="carousel-stage" id="carousel-stage" aria-label="Property types">
+
+        <article class="prop-card prop-card--rooms reveal" role="listitem">
+          <div class="prop-card-watermark" aria-hidden="true">R</div>
+          <div class="prop-card-content">
+            <div class="prop-card-top">
+              <div class="prop-card-badge" aria-label="Average rating 4.95">&#9733; 4.95</div>
+            </div>
+            <div class="prop-card-bottom">
+              <p class="prop-card-type">Private</p>
+              <h3 class="prop-card-name">Private Rooms</h3>
+              <p class="prop-card-desc">Queen and king beds, art on the walls, hardwood floors. The rooms guests return to. Breakfast, Wi-Fi, pool access where available.</p>
+              <a href="https://www.airbnb.com" target="_blank" rel="noopener noreferrer" class="prop-card-link">Book on Airbnb <svg width="12" height="12" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+            </div>
+          </div>
+        </article>
+
+        <article class="prop-card prop-card--pods reveal reveal-d1" role="listitem">
+          <div class="prop-card-watermark" aria-hidden="true">S</div>
+          <div class="prop-card-content">
+            <div class="prop-card-top">
+              <div class="prop-card-badge" aria-label="Average rating 4.93">&#9733; 4.93</div>
+            </div>
+            <div class="prop-card-bottom">
+              <p class="prop-card-type">Industrial Boutique</p>
+              <h3 class="prop-card-name">The Shop Pods</h3>
+              <p class="prop-card-desc">Dark walls. Pipe shelving. Large-format original art. Lockers. Headphones. Each pod has a distinct identity — none of them look alike.</p>
+              <a href="https://www.airbnb.com" target="_blank" rel="noopener noreferrer" class="prop-card-link">Book on Airbnb <svg width="12" height="12" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+            </div>
+          </div>
+        </article>
+
+        <article class="prop-card prop-card--tiny reveal reveal-d2" role="listitem">
+          <div class="prop-card-watermark" aria-hidden="true">T</div>
+          <div class="prop-card-content">
+            <div class="prop-card-top">
+              <div class="prop-card-badge" aria-label="Average rating 4.95">&#9733; 4.95</div>
+            </div>
+            <div class="prop-card-bottom">
+              <p class="prop-card-type">Entire Place</p>
+              <h3 class="prop-card-name">Tiny Homes</h3>
+              <p class="prop-card-desc">Designed to the door handle. Small footprint, full functionality. Each exterior makes a statement before you ever step inside.</p>
+              <a href="https://www.airbnb.com" target="_blank" rel="noopener noreferrer" class="prop-card-link">Book on Airbnb <svg width="12" height="12" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+            </div>
+          </div>
+        </article>
+
+        <article class="prop-card prop-card--container reveal reveal-d3" role="listitem">
+          <div class="prop-card-watermark" aria-hidden="true">C</div>
+          <div class="prop-card-content">
+            <div class="prop-card-top">
+              <div class="prop-card-badge" aria-label="Average rating 4.91">&#9733; 4.91</div>
+            </div>
+            <div class="prop-card-bottom">
+              <p class="prop-card-type">Entire Place</p>
+              <h3 class="prop-card-name">Container Homes</h3>
+              <p class="prop-card-desc">Steel shell, curated interior, pool access. Repurposed with purpose. Surprises you at the curb and keeps the promise inside.</p>
+              <a href="https://www.airbnb.com" target="_blank" rel="noopener noreferrer" class="prop-card-link">Book on Airbnb <svg width="12" height="12" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+            </div>
+          </div>
+        </article>
+
+        <article class="prop-card prop-card--camper reveal reveal-d4" role="listitem">
+          <div class="prop-card-watermark" aria-hidden="true">R</div>
+          <div class="prop-card-content">
+            <div class="prop-card-top">
+              <div class="prop-card-badge" aria-label="Average rating 4.96">&#9733; 4.96</div>
+            </div>
+            <div class="prop-card-bottom">
+              <p class="prop-card-type">Entire Place</p>
+              <h3 class="prop-card-name">Campers &amp; RVs</h3>
+              <p class="prop-card-desc">Full bath, full kitchen, pool, Wi-Fi. Everything you'd expect from a house, parked.</p>
+              <a href="https://www.airbnb.com" target="_blank" rel="noopener noreferrer" class="prop-card-link">Book on Airbnb <svg width="12" height="12" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+            </div>
+          </div>
+        </article>
+
+        <article class="prop-card prop-card--shared reveal reveal-d5" role="listitem">
+          <div class="prop-card-watermark" aria-hidden="true">B</div>
+          <div class="prop-card-content">
+            <div class="prop-card-top">
+              <div class="prop-card-badge" aria-label="Average rating 4.90">&#9733; 4.90</div>
+            </div>
+            <div class="prop-card-bottom">
+              <p class="prop-card-type">Shared Room</p>
+              <h3 class="prop-card-name">Bed &amp; Breakfast</h3>
+              <p class="prop-card-desc">The best value in the portfolio. Private bed, breakfast included, fast Wi-Fi, no hidden fees. Automatic discounts for extended stays.</p>
+              <a href="https://www.airbnb.com" target="_blank" rel="noopener noreferrer" class="prop-card-link">Book on Airbnb <svg width="12" height="12" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+            </div>
+          </div>
+        </article>
+
+        </div><!-- /carousel-stage -->
+
+        <!-- Navigation: prev · dots · next -->
+        <div class="carousel-controls">
+          <button class="carousel-btn" id="carousel-prev" aria-label="Previous property type">
+            <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true">
+              <path d="M11 4l-5 5 5 5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+          <div class="carousel-dots" id="carousel-dots">
+            <button class="carousel-dot active" data-index="0" aria-label="Private Rooms"></button>
+            <button class="carousel-dot" data-index="1" aria-label="The Shop Pods"></button>
+            <button class="carousel-dot" data-index="2" aria-label="Tiny Homes"></button>
+            <button class="carousel-dot" data-index="3" aria-label="Container Homes"></button>
+            <button class="carousel-dot" data-index="4" aria-label="Campers and RVs"></button>
+            <button class="carousel-dot" data-index="5" aria-label="Bed and Breakfast"></button>
+          </div>
+          <button class="carousel-btn" id="carousel-next" aria-label="Next property type">
+            <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true">
+              <path d="M7 4l5 5-5 5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+        </div>
+
+      </div><!-- /carousel-wrapper -->
+    </div>
+  </section>
+
+
+  <!-- ===========================================
+       AMENITIES
+  =========================================== -->
+  <section class="section amenities" id="amenities" aria-labelledby="amenities-heading">
+    <div class="section-inner">
+      <div class="amenities-grid">
+
+        <div class="amenities-headline-col">
+          <span class="t-label eyebrow reveal">What's Included</span>
+          <h2 class="t-h2 reveal reveal-d1" id="amenities-heading">
+            Amenities that<br>come standard,<br><em>not extra.</em>
+          </h2>
+          <p class="amenities-headline-subtext reveal reveal-d2">
+            Certain things don't change across the property types. These aren't upsells — they're the baseline every stay is built on.
+          </p>
+        </div>
+
+        <div class="amenity-grid">
+          <div class="amenity-item reveal">
+            <div class="amenity-icon" aria-hidden="true">&#9749;</div>
+            <div class="amenity-name">Breakfast Included</div>
+            <div class="amenity-desc">Morning essentials in most properties. Start the day without thinking about it.</div>
+          </div>
+          <div class="amenity-item reveal reveal-d1">
+            <div class="amenity-icon" aria-hidden="true">&#9889;</div>
+            <div class="amenity-name">Fast Wi-Fi</div>
+            <div class="amenity-desc">High-speed throughout. Work from anywhere — it's not an afterthought.</div>
+          </div>
+          <div class="amenity-item reveal reveal-d2">
+            <div class="amenity-icon" aria-hidden="true">&#127946;</div>
+            <div class="amenity-name">Pool Access</div>
+            <div class="amenity-desc">Available across many properties. Phoenix heat requires it.</div>
+          </div>
+          <div class="amenity-item reveal reveal-d3">
+            <div class="amenity-icon" aria-hidden="true">&#128663;</div>
+            <div class="amenity-name">Free Parking</div>
+            <div class="amenity-desc">On-site, always included. No apps, no meters.</div>
+          </div>
+          <div class="amenity-item reveal reveal-d4">
+            <div class="amenity-icon" aria-hidden="true">&#128176;</div>
+            <div class="amenity-name">No Hidden Fees</div>
+            <div class="amenity-desc">The price shown is the price. Extended stays earn automatic discounts.</div>
+          </div>
+          <div class="amenity-item reveal reveal-d5">
+            <div class="amenity-icon" aria-hidden="true">&#128205;</div>
+            <div class="amenity-name">Near Downtown</div>
+            <div class="amenity-desc">3 miles from the city center. Light rail nearby. Everything within reach.</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ===========================================
+       STANDARDS
+  =========================================== -->
+  <section class="section standards" id="standards" aria-labelledby="standards-heading">
+    <div class="section-inner">
+
+      <span class="t-label eyebrow reveal">The Standards</span>
+      <h2 class="t-h2 reveal reveal-d1" id="standards-heading">
+        How we keep<br>every stay right.
+      </h2>
+      <p class="standards-intro reveal reveal-d2">
+        These aren't warnings. They're the agreements that make a good experience possible for everyone — guests, neighbors, and the people who care for these properties. We ask the same from guests.
+      </p>
+
+      <div class="standards-grid">
+
+        <div class="standards-category reveal">
+          <p class="t-label standards-cat-label">Arrival &amp; Departure</p>
+          <div class="standards-rules">
+            <div class="rule-item"><div class="rule-dot" aria-hidden="true"></div><p class="rule-text">Check-in is after 3:00 PM. Early check-in may be available — request it in advance, not at the door.</p></div>
+            <div class="rule-item"><div class="rule-dot" aria-hidden="true"></div><p class="rule-text">Checkout is by 11:00 AM. Late checkout may be possible — ask the evening before.</p></div>
+            <div class="rule-item"><div class="rule-dot" aria-hidden="true"></div><p class="rule-text">Leave the space as you found it. A quick reset before you go is expected and appreciated.</p></div>
+            <div class="rule-item"><div class="rule-dot" aria-hidden="true"></div><p class="rule-text">Report any damage before checkout. Honesty is always better than a dispute after the fact.</p></div>
+          </div>
+        </div>
+
+        <div class="standards-category reveal reveal-d1">
+          <p class="t-label standards-cat-label">During Your Stay</p>
+          <div class="standards-rules">
+            <div class="rule-item"><div class="rule-dot" aria-hidden="true"></div><p class="rule-text">No smoking indoors. Designated areas are available outside. We keep everything clean for every guest.</p></div>
+            <div class="rule-item"><div class="rule-dot" aria-hidden="true"></div><p class="rule-text">Quiet hours from 10:00 PM to 8:00 AM. This is a community — sound carries, and neighbors matter.</p></div>
+            <div class="rule-item"><div class="rule-dot" aria-hidden="true"></div><p class="rule-text">No unregistered overnight guests. The number booked is the number that stays.</p></div>
+            <div class="rule-item"><div class="rule-dot" aria-hidden="true"></div><p class="rule-text">No parties or events. These are real homes — treat them as such.</p></div>
+          </div>
+        </div>
+
+        <div class="standards-category reveal reveal-d2">
+          <p class="t-label standards-cat-label">Shared Spaces</p>
+          <div class="standards-rules">
+            <div class="rule-item"><div class="rule-dot" aria-hidden="true"></div><p class="rule-text">Laundry is shared where available. Don't leave items unattended — the machine is for everyone.</p></div>
+            <div class="rule-item"><div class="rule-dot" aria-hidden="true"></div><p class="rule-text">Pool areas are shared. Keep them clean, keep the volume reasonable, respect the space.</p></div>
+            <div class="rule-item"><div class="rule-dot" aria-hidden="true"></div><p class="rule-text">Parking is assigned. Use your designated spot — not your neighbor's.</p></div>
+            <div class="rule-item"><div class="rule-dot" aria-hidden="true"></div><p class="rule-text">Pets are welcome in select listings. Confirm at booking — not all properties allow them.</p></div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ===========================================
+       ABOUT
+  =========================================== -->
+  <section class="section about" id="about" aria-labelledby="about-heading">
+    <div class="section-inner">
+      <div class="about-inner">
+
+        <div class="about-deco reveal" aria-hidden="true">
+          <div class="about-deco-letter">C</div>
+        </div>
+
+        <div class="about-content">
+          <span class="t-label eyebrow reveal">The People Behind It</span>
+          <h2 class="t-h2 reveal reveal-d1" id="about-heading">
+            Built by people<br>who actually<br><em>stay here.</em>
+          </h2>
+          <p class="about-body reveal reveal-d2">
+            Cecy and Mario started with one room and a straightforward standard: if it's not right, it doesn't go out. That approach built something that doesn't fit one category — rooms, campers, tiny homes, containers, shop pods — each one the result of the same question: <em>what would make us want to stay here?</em>
+          </p>
+          <p class="about-body reveal reveal-d3">
+            They manage everything themselves — which is why problems get fixed the same day. Cecy handles the guest experience. Mario keeps the properties right. The breakfast is real. The Wi-Fi works. The ratings reflect the actual experience.
+          </p>
+          <div class="about-cta reveal reveal-d4">
+            <a href="#connect" class="btn-primary">
+              Book a Stay
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </a>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ===========================================
+       CONNECT
+  =========================================== -->
+  <section class="section connect" id="connect" aria-labelledby="connect-heading">
+    <div class="section-inner">
+      <div class="connect-inner">
+
+        <div class="connect-text">
+          <span class="t-label eyebrow connect-eyebrow reveal">Find Your Stay</span>
+          <h2 class="t-h2 reveal reveal-d1" id="connect-heading">
+            Something different is waiting.
+          </h2>
+          <p class="reveal reveal-d2">
+            Browse the full collection on Airbnb. Questions about a specific property, extended stays, or anything else — reach out directly. We respond.
+          </p>
+        </div>
+
+        <div class="connect-actions reveal reveal-d3">
+          <a href="https://www.airbnb.com" target="_blank" rel="noopener noreferrer" class="btn-white">
+            Browse All Listings
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </a>
+          <a href="mailto:hello@cecystays.com" class="btn-white-outline">Get in Touch</a>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ===========================================
+       FOOTER
+  =========================================== -->
+  <footer class="footer" aria-label="Site footer">
+    <div class="footer-inner">
+      <a href="#" class="footer-logo" aria-label="Cecy Stays — back to top">
+        <span class="footer-logo-mark">C·</span>Cecy Stays
+      </a>
+      <nav class="footer-links" aria-label="Footer navigation">
+        <a href="#collection">Properties</a>
+        <a href="#standards">House Rules</a>
+        <a href="#about">About</a>
+        <a href="/privacy-policy?dl=0">Privacy Policy</a>
+        <a href="/terms-of-service?dl=0">Terms of Service</a>
+      </nav>
+      <p class="footer-legal">&copy; 2025 Cecy Stays. All rights reserved.</p>
+    </div>
+  </footer>
+
+
+  <script>
+    'use strict';
+
+    // === 1. NAV SCROLL STATE ===
+    const mainNav = document.getElementById('main-nav');
+    const onScroll = () => mainNav.classList.toggle('scrolled', window.scrollY > 50);
+    window.addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
+
+
+    // === 2. HAMBURGER / DRAWER ===
+    const hamburger = document.getElementById('nav-hamburger');
+    const drawer    = document.getElementById('nav-drawer');
+
+    function openDrawer() {
+      drawer.classList.add('open');
+      hamburger.classList.add('open');
+      hamburger.setAttribute('aria-expanded', 'true');
+      drawer.setAttribute('aria-hidden', 'false');
+    }
+
+    function closeDrawer() {
+      drawer.classList.remove('open');
+      hamburger.classList.remove('open');
+      hamburger.setAttribute('aria-expanded', 'false');
+      drawer.setAttribute('aria-hidden', 'true');
+    }
+
+    hamburger.addEventListener('click', () => {
+      drawer.classList.contains('open') ? closeDrawer() : openDrawer();
+    });
+
+    // Close when any drawer link is tapped
+    drawer.querySelectorAll('a').forEach(link => link.addEventListener('click', closeDrawer));
+
+    // Close on outside click
+    document.addEventListener('click', (e) => {
+      if (drawer.classList.contains('open') &&
+          !drawer.contains(e.target) &&
+          !hamburger.contains(e.target)) {
+        closeDrawer();
+      }
+    });
+
+    // Close on scroll
+    window.addEventListener('scroll', () => {
+      if (drawer.classList.contains('open')) closeDrawer();
+    }, { passive: true });
+
+
+    // === 3. SCROLL REVEAL ===
+    const revealEls = document.querySelectorAll('.reveal');
+    const revealObserver = new IntersectionObserver(
+      (entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+            revealObserver.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.1, rootMargin: '0px 0px -50px 0px' }
+    );
+    revealEls.forEach(el => revealObserver.observe(el));
+
+
+    // === 4. HERO TILE PERSPECTIVE TILT (desktop, respects reduced-motion) ===
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    if (!prefersReducedMotion) {
+      document.querySelectorAll('.hero-tile').forEach(tile => {
+        tile.addEventListener('mousemove', (e) => {
+          const r  = tile.getBoundingClientRect();
+          const dx = (e.clientX - (r.left + r.width  / 2)) / r.width  * 6;
+          const dy = (e.clientY - (r.top  + r.height / 2)) / r.height * 6;
+          tile.style.transform  = `perspective(600px) rotateX(${-dy}deg) rotateY(${dx}deg) translateY(-4px)`;
+          tile.style.transition = 'transform 0.1s ease';
+        });
+        tile.addEventListener('mouseleave', () => {
+          tile.style.transform  = '';
+          tile.style.transition = 'transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
+        });
+      });
+    }
+
+
+    // === 5. 3D CAROUSEL ===
+    (function () {
+      const stage    = document.getElementById('carousel-stage');
+      const prevBtn  = document.getElementById('carousel-prev');
+      const nextBtn  = document.getElementById('carousel-next');
+      const dotsWrap = document.getElementById('carousel-dots');
+      if (!stage || !prevBtn || !nextBtn || !dotsWrap) return;
+
+      const cards = Array.from(stage.querySelectorAll('.prop-card'));
+      const dots  = Array.from(dotsWrap.querySelectorAll('.carousel-dot'));
+      const N     = cards.length;
+
+      const TRANS_MS   = 580;   // navigation transition duration
+      const FLOAT_PERIOD = 3400; // float cycle ms
+      const FLOAT_AMP    = 7;    // px up/down
+      const AUTO_MS      = 4800; // auto-advance ms
+
+      let idx          = 0;          // current centre index
+      let transitioning = false;
+      let floatRaf     = null;
+      let floatStart   = 0;
+      let autoTimer    = null;
+      const reduced    = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+      /* ---------- transform string for a given relative position ---------- */
+      function tx(rel, floatY) {
+        floatY = floatY || 0;
+        if (rel === 0) {
+          // Centre card: include float offset
+          return `perspective(1200px) translateX(-50%) translateY(calc(-50% + ${floatY}px)) scale(1) rotateY(0deg)`;
+        }
+        const abs  = Math.min(Math.abs(rel), 2);
+        const sign = rel < 0 ? -1 : 1;
+        const mob  = window.innerWidth < 768;
+        // On mobile, push non-active cards fully off screen
+        const xPct = mob ? sign * abs * 130 : sign * abs * 62;
+        const sc   = (1 - abs * 0.16).toFixed(3);
+        const ry   = (sign * abs * 20).toFixed(1);
+        return `perspective(1200px) translateX(calc(-50% + ${xPct}%)) translateY(-50%) scale(${sc}) rotateY(${ry}deg)`;
+      }
+
+      /* ---------- apply visual state to every card ---------- */
+      function paint(floatY) {
+        floatY = floatY || 0;
+        const mob = window.innerWidth < 768;
+        cards.forEach(function (card, i) {
+          // Normalised relative position in [-floor(N/2), +floor(N/2)]
+          let rel = ((i - idx) % N + N) % N;
+          if (rel > N / 2) rel -= N;
+          const abs = Math.abs(rel);
+
+          // Hide cards more than 2 slots away
+          if (abs > 2) {
+            card.style.opacity      = '0';
+            card.style.zIndex       = '0';
+            card.style.filter       = '';
+            card.style.pointerEvents = 'none';
+            card.style.transform    = tx(rel > 0 ? 3 : -3, 0);
+            return;
+          }
+
+          // Mobile: only show centre card
+          card.style.opacity      = (mob && abs > 0) ? '0' : String(+(1 - abs * 0.22).toFixed(2));
+          card.style.zIndex       = String(10 - abs * 3);
+          card.style.filter       = abs > 0 ? `blur(${(abs * 1.5).toFixed(1)}px)` : '';
+          card.style.pointerEvents = abs <= 1 ? 'auto' : 'none';
+          card.style.transform    = tx(rel, rel === 0 ? floatY : 0);
+        });
+      }
+
+      /* ---------- float animation (RAF loop on active card only) ---------- */
+      function floatTick() {
+        if (transitioning || reduced) return;
+        const elapsed = performance.now() - floatStart;
+        const t       = (elapsed % FLOAT_PERIOD) / FLOAT_PERIOD;
+        const fy      = -FLOAT_AMP * Math.sin(t * 2 * Math.PI);
+        // Only update the active card's transform
+        cards[idx].style.transform = tx(0, fy);
+        floatRaf = requestAnimationFrame(floatTick);
+      }
+
+      function startFloat() {
+        if (reduced) return;
+        cancelAnimationFrame(floatRaf);
+        floatStart = performance.now();
+        floatTick();
+      }
+
+      function stopFloat() {
+        cancelAnimationFrame(floatRaf);
+        floatRaf = null;
+      }
+
+      /* ---------- navigation ---------- */
+      function goTo(target) {
+        if (transitioning) return;
+        transitioning = true;
+        stopFloat();
+
+        // Enable CSS transitions for the swap
+        cards.forEach(function (c) {
+          c.style.transition = [
+            `transform ${TRANS_MS}ms cubic-bezier(0.23,1,0.32,1)`,
+            `opacity ${TRANS_MS}ms ease`,
+            `filter ${TRANS_MS}ms ease`
+          ].join(',');
+        });
+
+        idx = ((target % N) + N) % N;
+        updateDots();
+        paint(0); // paint without float for clean transition
+
+        setTimeout(function () {
+          // Strip inline transitions; let CSS handle only box-shadow
+          cards.forEach(function (c) { c.style.transition = ''; });
+          transitioning = false;
+          startFloat();
+        }, TRANS_MS + 40);
+      }
+
+      function next() { goTo(idx + 1); }
+      function prev() { goTo(idx - 1); }
+
+      /* ---------- dots ---------- */
+      function updateDots() {
+        dots.forEach(function (d, i) { d.classList.toggle('active', i === idx); });
+      }
+
+      /* ---------- auto-advance ---------- */
+      function resetAuto() {
+        clearInterval(autoTimer);
+        autoTimer = setInterval(next, AUTO_MS);
+      }
+
+      /* ---------- touch / swipe ---------- */
+      var tsX = 0, tsY = 0;
+      stage.addEventListener('touchstart', function (e) {
+        tsX = e.touches[0].clientX;
+        tsY = e.touches[0].clientY;
+        clearInterval(autoTimer);
+      }, { passive: true });
+
+      stage.addEventListener('touchend', function (e) {
+        var dx = e.changedTouches[0].clientX - tsX;
+        var dy = e.changedTouches[0].clientY - tsY;
+        if (Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > 44) {
+          dx < 0 ? next() : prev();
+        }
+        resetAuto();
+      }, { passive: true });
+
+      /* ---------- click non-active card → advance to it ---------- */
+      cards.forEach(function (card, i) {
+        card.addEventListener('click', function () {
+          if (i !== idx) { goTo(i); resetAuto(); }
+        });
+      });
+
+      /* ---------- button + dot events ---------- */
+      prevBtn.addEventListener('click', function () { prev(); resetAuto(); });
+      nextBtn.addEventListener('click', function () { next(); resetAuto(); });
+      dots.forEach(function (dot, i) {
+        dot.addEventListener('click', function () { goTo(i); resetAuto(); });
+      });
+
+      /* ---------- keyboard ---------- */
+      document.addEventListener('keydown', function (e) {
+        if (e.key === 'ArrowLeft')  { prev(); resetAuto(); }
+        if (e.key === 'ArrowRight') { next(); resetAuto(); }
+      });
+
+      /* ---------- pause auto on hover ---------- */
+      stage.addEventListener('mouseenter', function () { clearInterval(autoTimer); });
+      stage.addEventListener('mouseleave', resetAuto);
+
+      /* ---------- init ---------- */
+      paint(0);
+      startFloat();
+      resetAuto();
+
+    }()); // end carousel IIFE
+
+  </script>
+
+</body>
+</html>
