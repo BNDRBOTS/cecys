@@ -14,8 +14,8 @@
   <meta property="og:title"       content="Cecy Stays — Distinctive Short-Term Rentals Near Downtown">
   <meta property="og:description" content="A curated collection of short-term rentals — private rooms, shop pods, tiny homes, container homes, and campers. Each space has its own character.">
   <meta property="og:url"         content="https://cecystays.com/">
-  <!-- TODO: replace og:image with the actual hero/brand photo once available -->
-  <meta property="og:image"       content="https://cecystays.com/og-image.jpg">
+
+  <meta property="og:image"       content="https://r2-uploader-production.up.railway.app/files/362f9b68-13d3-40a7-ad31-5aa7e492af29.jpeg">
   <!-- Twitter card -->
   <meta name="twitter:card"        content="summary_large_image">
   <meta name="twitter:title"       content="Cecy Stays — Distinctive Short-Term Rentals">
@@ -40,7 +40,7 @@
       "bestRating": "5"
     },
     "sameAs": [
-      "https://www.airbnb.com"
+      "https://www.airbnb.com/users/profile/1469068484573002164"
     ]
   }
   </script>
@@ -472,9 +472,56 @@
       /* transform handled entirely by JS; no CSS transform here to avoid compound conflict */
     }
 
-    .hero-tile-1 { background: var(--col-tile-pods);      margin-left: -1.5rem; }
-    .hero-tile-2 { background: var(--col-tile-rooms);     margin-left: 2.5rem; margin-right: -0.75rem; }
-    .hero-tile-3 { background: var(--col-tile-container); margin-left: -0.75rem; }
+    /* Gradient scrim on hero tiles — ensures text legibility over photos */
+    .hero-tile::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        to top,
+        oklch(10% 0.02 38 / 0.72) 0%,
+        oklch(10% 0.02 38 / 0.18) 60%,
+        transparent 100%
+      );
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    /* Real property photos beneath near-opaque brand-color tints.
+       Tint at 90%+ preserves original color depth — photo adds subtle
+       texture only. Swap src URLs in place if reordering is needed:
+       tile-1 → ocean blue colonial
+       tile-2 → seafoam serenity mini
+       tile-3 → two-tone teal / wooden cozy-shack                     */
+    .hero-tile-1 {
+      background-image:
+        linear-gradient(180deg, oklch(18% 0.025 40 / 0.92) 0%, oklch(18% 0.025 40 / 0.90) 100%),
+        url('https://r2-uploader-production.up.railway.app/files/485654c1-f53d-4f42-9faa-ef9f84505a3f.jpeg');
+      background-size: cover;
+      background-position: center;
+      margin-left: -1.5rem;
+    }
+
+    .hero-tile-2 {
+      background-image:
+        linear-gradient(180deg, oklch(52% 0.13 34 / 0.91) 0%, oklch(46% 0.13 34 / 0.89) 100%),
+        url('https://r2-uploader-production.up.railway.app/files/59105c22-0465-4a37-ad3f-134020f6b029.jpeg');
+      background-size: cover;
+      background-position: center;
+      margin-left: 2.5rem;
+      margin-right: -0.75rem;
+    }
+
+    .hero-tile-3 {
+      background-image:
+        linear-gradient(180deg, oklch(40% 0.07 215 / 0.91) 0%, oklch(34% 0.07 215 / 0.89) 100%),
+        url('https://r2-uploader-production.up.railway.app/files/a2a26bd5-f366-450f-aef0-6a2be1ccf2ad.jpeg');
+      background-size: cover;
+      background-position: center;
+      margin-left: -0.75rem;
+    }
+
+    /* Ensure rating badge + label stay above scrim */
 
     .hero-tile-type {
       position: absolute;
@@ -504,6 +551,7 @@
       font-size: 0.78rem;
       font-weight: 600;
       color: white;
+      z-index: 1; /* above ::before scrim */
     }
 
     .hero-tile-label {
@@ -933,13 +981,19 @@
     }
 
     /* H-1 FIX: position: relative added — absolutely-positioned children
-       (.about-deco-letter, ::after stripe) now correctly contained here */
+       (.about-deco-letter, ::after stripe) now correctly contained here.
+       Real photo: main community shot under near-opaque warm tint —
+       preserves original amber/copper depth, photo adds grounding texture. */
     .about-deco {
       position: relative;
       height: 260px;
       border-radius: var(--r-lg);
       overflow: hidden;
-      background: linear-gradient(145deg, oklch(80% 0.07 60) 0%, oklch(63% 0.11 40) 60%, oklch(46% 0.1 36) 100%);
+      background-image:
+        linear-gradient(145deg, oklch(80% 0.07 60 / 0.88) 0%, oklch(46% 0.1 36 / 0.92) 100%),
+        url('https://r2-uploader-production.up.railway.app/files/362f9b68-13d3-40a7-ad31-5aa7e492af29.jpeg');
+      background-size: cover;
+      background-position: center;
     }
 
     .about-deco-letter {
@@ -1307,7 +1361,7 @@
           Explore Stays
           <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </a>
-        <a href="https://www.airbnb.com" target="_blank" rel="noopener noreferrer" class="btn-ghost">
+        <a href="https://www.airbnb.com/users/profile/1469068484573002164" target="_blank" rel="noopener noreferrer" class="btn-ghost">
           View on Airbnb
           <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </a>
@@ -1360,7 +1414,7 @@
             Every kind of stay.<br>One way of doing it.
           </h2>
         </div>
-        <a href="https://www.airbnb.com" target="_blank" rel="noopener noreferrer" class="collection-view-all reveal reveal-d2">
+        <a href="https://www.airbnb.com/users/profile/1469068484573002164" target="_blank" rel="noopener noreferrer" class="collection-view-all reveal reveal-d2">
           All listings on Airbnb
           <svg width="13" height="13" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </a>
@@ -1379,7 +1433,7 @@
               <p class="prop-card-type">Private</p>
               <h3 class="prop-card-name">Private Rooms</h3>
               <p class="prop-card-desc">Queen and king beds, art on the walls, hardwood floors. The rooms guests return to. Breakfast, Wi-Fi, pool access where available.</p>
-              <a href="https://www.airbnb.com" target="_blank" rel="noopener noreferrer" class="prop-card-link">Book on Airbnb <svg width="12" height="12" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+              <a href="https://www.airbnb.com/users/profile/1469068484573002164" target="_blank" rel="noopener noreferrer" class="prop-card-link">Book on Airbnb <svg width="12" height="12" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
             </div>
           </div>
         </article>
@@ -1394,7 +1448,7 @@
               <p class="prop-card-type">Industrial Boutique</p>
               <h3 class="prop-card-name">The Shop Pods</h3>
               <p class="prop-card-desc">Dark walls. Pipe shelving. Large-format original art. Lockers. Headphones. Each pod has a distinct identity — none of them look alike.</p>
-              <a href="https://www.airbnb.com" target="_blank" rel="noopener noreferrer" class="prop-card-link">Book on Airbnb <svg width="12" height="12" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+              <a href="https://www.airbnb.com/users/profile/1469068484573002164" target="_blank" rel="noopener noreferrer" class="prop-card-link">Book on Airbnb <svg width="12" height="12" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
             </div>
           </div>
         </article>
@@ -1409,7 +1463,7 @@
               <p class="prop-card-type">Entire Place</p>
               <h3 class="prop-card-name">Tiny Homes</h3>
               <p class="prop-card-desc">Designed to the door handle. Small footprint, full functionality. Each exterior makes a statement before you ever step inside.</p>
-              <a href="https://www.airbnb.com" target="_blank" rel="noopener noreferrer" class="prop-card-link">Book on Airbnb <svg width="12" height="12" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+              <a href="https://www.airbnb.com/users/profile/1469068484573002164" target="_blank" rel="noopener noreferrer" class="prop-card-link">Book on Airbnb <svg width="12" height="12" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
             </div>
           </div>
         </article>
@@ -1424,7 +1478,7 @@
               <p class="prop-card-type">Entire Place</p>
               <h3 class="prop-card-name">Container Homes</h3>
               <p class="prop-card-desc">Steel shell, curated interior, pool access. Repurposed with purpose. Surprises you at the curb and keeps the promise inside.</p>
-              <a href="https://www.airbnb.com" target="_blank" rel="noopener noreferrer" class="prop-card-link">Book on Airbnb <svg width="12" height="12" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+              <a href="https://www.airbnb.com/users/profile/1469068484573002164" target="_blank" rel="noopener noreferrer" class="prop-card-link">Book on Airbnb <svg width="12" height="12" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
             </div>
           </div>
         </article>
@@ -1439,7 +1493,7 @@
               <p class="prop-card-type">Entire Place</p>
               <h3 class="prop-card-name">Campers &amp; RVs</h3>
               <p class="prop-card-desc">Full bath, full kitchen, pool, Wi-Fi. Everything you'd expect from a house, parked.</p>
-              <a href="https://www.airbnb.com" target="_blank" rel="noopener noreferrer" class="prop-card-link">Book on Airbnb <svg width="12" height="12" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+              <a href="https://www.airbnb.com/users/profile/1469068484573002164" target="_blank" rel="noopener noreferrer" class="prop-card-link">Book on Airbnb <svg width="12" height="12" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
             </div>
           </div>
         </article>
@@ -1454,7 +1508,7 @@
               <p class="prop-card-type">Shared Room</p>
               <h3 class="prop-card-name">Bed &amp; Breakfast</h3>
               <p class="prop-card-desc">The best value in the portfolio. Private bed, breakfast included, fast Wi-Fi, no hidden fees. Automatic discounts for extended stays.</p>
-              <a href="https://www.airbnb.com" target="_blank" rel="noopener noreferrer" class="prop-card-link">Book on Airbnb <svg width="12" height="12" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+              <a href="https://www.airbnb.com/users/profile/1469068484573002164" target="_blank" rel="noopener noreferrer" class="prop-card-link">Book on Airbnb <svg width="12" height="12" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
             </div>
           </div>
         </article>
@@ -1725,7 +1779,7 @@
         </div>
 
         <div class="connect-actions reveal reveal-d3">
-          <a href="https://www.airbnb.com" target="_blank" rel="noopener noreferrer" class="btn-white">
+          <a href="https://www.airbnb.com/users/profile/1469068484573002164" target="_blank" rel="noopener noreferrer" class="btn-white">
             Browse All Listings
             <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
           </a>
@@ -1785,10 +1839,10 @@
      * =====================================================
      * LINK PLACEHOLDERS — update before going live:
      *
-     * AIRBNB_PROFILE  — all href="https://www.airbnb.com" links
-     *                   should point to Cecy's actual Airbnb
-     *                   host profile URL, e.g.:
-     *                   https://www.airbnb.com/users/show/XXXXXXX
+     * AIRBNB_PROFILE  — all href="https://www.airbnb.com/users/profile/1469068484573002164" links
+     *                   is now set to Cecy's Airbnb profile — verified
+     *                   URL: https://www.airbnb.com/users/profile/1469068484573002164
+     *                   
      *
      * CONTACT_EMAIL   — mailto:hello@cecystays.com
      *                   confirm this inbox exists and is monitored.
