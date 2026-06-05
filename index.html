@@ -4,10 +4,53 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Cecy Stays — Distinctive Short-Term Rentals</title>
-  <meta name="description" content="A curated collection of short-term rentals near Downtown. Shop pods, tiny homes, container homes, campers, and private rooms — each one considered.">
+  <meta name="description" content="A curated collection of short-term rentals near Downtown Phoenix — private rooms, shop pods, tiny homes, container homes, and campers. Consistently rated 4.9★.">
+  <!-- SEO: crawl + index -->
+  <meta name="robots" content="index, follow">
+  <!-- TODO: replace with the canonical domain once live -->
+  <link rel="canonical" href="https://r2-uploader-production.up.railway.app/files/362f9b68-13d3-40a7-ad31-5aa7e492af29.jpeg">
+  <!-- Open Graph -->
+  <meta property="og:type"        content="website">
+  <meta property="og:title"       content="Cecy Stays — Distinctive Short-Term Rentals Near Downtown">
+  <meta property="og:description" content="A curated collection of short-term rentals — private rooms, shop pods, tiny homes, container homes, and campers. Each space has its own character.">
+  <meta property="og:url"         content="https://www.airbnb.com/users/profile/1469068484573002164?previous_page_name=PdpHomeMarketplace">
+  <meta property="og:image"       content="https://r2-uploader-production.up.railway.app/files/362f9b68-13d3-40a7-ad31-5aa7e492af29.jpeg">
+  <!-- Twitter card -->
+  <meta name="twitter:card"        content="summary_large_image">
+  <meta name="twitter:title"       content="Cecy Stays — Distinctive Short-Term Rentals">
+  <meta name="twitter:description" content="Private rooms, shop pods, tiny homes, container homes, and campers near Downtown Phoenix. 4.9★ across the portfolio.">
+  <!-- JSON-LD: LocalBusiness / LodgingBusiness -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "LodgingBusiness",
+    "name": "Cecy Stays",
+    "description": "A curated collection of short-term rentals near Downtown Phoenix — private rooms, shop pods, tiny homes, container homes, and campers.",
+    "url": "https://cecystays.com",
+    "address": {
+      "@type": "PostalAddress",
+      "addressLocality": "Phoenix",
+      "addressRegion": "AZ",
+      "addressCountry": "US"
+    },
+    "aggregateRating": {
+      "@type": "AggregateRating",
+      "ratingValue": "4.9",
+      "bestRating": "5"
+    },
+    "sameAs": [
+      "https://www.airbnb.com"
+    ]
+  }
+  </script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Figtree:ital,wght@0,300;0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+
+  <!-- Preload hero background images for faster paint -->
+  <link rel="preload" as="image" href="https://r2-uploader-production.up.railway.app/files/48c81510-e892-42a2-bef9-5e9b1df39f24.jpeg">
+  <link rel="preload" as="image" href="https://r2-uploader-production.up.railway.app/files/a5e7280e-0112-46c6-b8b9-2a9b03029a00.jpeg">
+  <link rel="preload" as="image" href="https://r2-uploader-production.up.railway.app/files/1f712ab4-d214-4ecf-93af-34720fdb2ca8.jpeg">
 
   <style>
     /* =============================================
@@ -92,7 +135,7 @@
     ul  { list-style: none; }
 
     button {
-      cursor: pointer;
+      /* cursor set by @media (hover: hover) and (pointer: fine) block — not here */
       border: none;
       background: none;
       font-family: inherit;
@@ -179,17 +222,28 @@
       box-shadow: 0 1px 0 var(--col-border);
     }
 
+    /* Logo SVG: sized for nav context */
     .nav-logo {
-      font-family: var(--ff-display);
-      font-size: 1.3rem;
-      font-weight: 700;
-      letter-spacing: -0.025em;
-      color: var(--col-text-primary);
       display: flex;
-      align-items: baseline;
-      gap: 0.15em;
+      align-items: center;
+      flex-shrink: 0;
     }
 
+    .logo-mark {
+      height: 38px;
+      width: auto;
+      display: block;
+    }
+
+    /* Footer dark-bg override — CSS vars cascade into inline SVG */
+    .footer .logo-mark {
+      --col-text-primary: var(--col-white);
+      --col-text-muted:   oklch(90% 0.02 60 / 0.55);
+      --col-border:       oklch(90% 0.02 60 / 0.28);
+      height: 30px;
+    }
+
+    /* No cursor on logo-mark */
     .nav-logo-mark { color: var(--col-primary); font-style: italic; }
 
     /* Nav links: HIDDEN at mobile base; shown at 768px+ */
@@ -422,9 +476,39 @@
       /* transform handled entirely by JS; no CSS transform here to avoid compound conflict */
     }
 
-    .hero-tile-1 { background: var(--col-tile-pods);      margin-left: -1.5rem; }
-    .hero-tile-2 { background: var(--col-tile-rooms);     margin-left: 2.5rem; margin-right: -0.75rem; }
-    .hero-tile-3 { background: var(--col-tile-container); margin-left: -0.75rem; }
+    /* New: image fills the tile, gradient overlay sits on top */
+    .hero-tile-bg {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      z-index: 0;
+    }
+
+    .hero-tile-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3));
+      z-index: 1;
+    }
+
+    .hero-tile-1 {
+      /* background removed – image is now an <img> tag */
+      border: 4px solid var(--col-tile-pods);
+      margin-left: -1.5rem;
+    }
+
+    .hero-tile-2 {
+      border: 4px solid var(--col-tile-rooms);
+      margin-left: 2.5rem;
+      margin-right: -0.75rem;
+    }
+
+    .hero-tile-3 {
+      border: 4px solid var(--col-tile-container);
+      margin-left: -0.75rem;
+    }
 
     .hero-tile-type {
       position: absolute;
@@ -440,6 +524,7 @@
       white-space: nowrap;
       pointer-events: none;
       user-select: none;
+      z-index: 2;
     }
 
     .hero-tile-rating {
@@ -454,6 +539,7 @@
       font-size: 0.78rem;
       font-weight: 600;
       color: white;
+      z-index: 2;
     }
 
     .hero-tile-label {
@@ -465,7 +551,7 @@
       /* WCAG fix: explicit high-contrast color replaces opacity fade */
       color: oklch(96% 0.01 60 / 0.88);
       position: relative;
-      z-index: 1;
+      z-index: 2;
     }
 
     /* =============================================
@@ -615,7 +701,7 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      cursor: pointer;
+      /* cursor set by pointer-device media query — not here */
       flex-shrink: 0;
       /* Only shadow transitions from CSS — transform handled entirely by JS */
       transition: background-color var(--tr-fast), border-color var(--tr-fast), box-shadow var(--tr-fast);
@@ -641,7 +727,7 @@
       border-radius: 50%;
       background: var(--col-border);
       border: none;
-      cursor: pointer;
+      /* cursor set by pointer-device media query */
       padding: 0;
       transition: background-color var(--tr-mid), width var(--tr-mid), border-radius var(--tr-mid);
     }
@@ -662,7 +748,7 @@
       overflow: hidden;
       /* JS controls all transforms — only shadow transitions by CSS */
       transition: box-shadow var(--tr-mid);
-      cursor: pointer;
+      /* cursor set by pointer-device media query */
       will-change: transform, opacity;
     }
 
@@ -801,7 +887,20 @@
       margin-top: var(--sp-6);
     }
 
-    .amenity-icon { font-size: 1.6rem; line-height: 1; margin-bottom: var(--sp-2); }
+    /* Amenity icons: SVG line-art, terracotta stroke via currentColor */
+    .amenity-icon {
+      width: 2rem;
+      height: 2rem;
+      margin-bottom: var(--sp-2);
+      color: var(--col-primary);
+      flex-shrink: 0;
+    }
+
+    .amenity-icon svg {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
 
     .amenity-name {
       font-family: var(--ff-display);
@@ -950,18 +1049,15 @@
       gap: var(--sp-3);
     }
 
+    /* Footer logo: font declarations removed — now SVG via .logo-mark
+       Colors are overridden by .footer .logo-mark CSS var block above */
     .footer-logo {
-      font-family: var(--ff-display);
-      font-size: 1.1rem;
-      font-weight: 700;
-      letter-spacing: -0.025em;
-      color: var(--col-white);
       display: flex;
-      align-items: baseline;
-      gap: 0.15em;
+      align-items: center;
     }
 
-    .footer-logo-mark { color: var(--col-primary); font-style: italic; }
+    /* .footer-logo-mark is unused; retained as selector stub in case custom
+       logo image is swapped in later without breaking anything */
 
     .footer-links { display: flex; gap: var(--sp-4); align-items: center; flex-wrap: wrap; }
 
@@ -1021,6 +1117,29 @@
         transform: none;
         animation: none;
         transition: none;
+      }
+    }
+
+    /* =============================================
+       18. POINTER-DEVICE CURSOR
+       cursor: pointer ONLY for devices with a fine
+       pointer (mouse). Touch screens get no cursor
+       feedback — none is shown so none is set.
+    ============================================= */
+    @media (hover: hover) and (pointer: fine) {
+      a,
+      button,
+      [role="button"],
+      .carousel-btn,
+      .carousel-dot,
+      .prop-card,
+      .nav-cta,
+      .nav-hamburger,
+      .nav-drawer-link,
+      .nav-drawer-cta,
+      .collection-view-all,
+      .footer-links a {
+        cursor: pointer;
       }
     }
 
@@ -1133,17 +1252,31 @@
   =========================================== -->
   <nav class="nav" id="main-nav" aria-label="Main navigation">
     <a href="#" class="nav-logo" aria-label="Cecy Stays — home">
-      <span class="nav-logo-mark">C·</span>Cecy Stays
+      <svg class="logo-mark" viewBox="0 0 210 60" xmlns="http://www.w3.org/2000/svg"
+           role="img" aria-label="Cecy Stays" fill="none">
+        <title>Cecy Stays</title>
+        <path d="M 48,15 A 24,24 0 1,0 48,45 L 40,38 A 13,13 0 1,1 40,22 Z"
+              fill="var(--col-primary)"/>
+        <circle cx="51" cy="30" r="2.5" fill="var(--col-primary)" opacity="0.6"/>
+        <line x1="68" y1="12" x2="68" y2="48"
+              stroke="var(--col-border)" stroke-width="1"/>
+        <text x="78" y="36"
+              font-family="'Playfair Display', Georgia, serif"
+              font-size="23" font-weight="700" font-style="italic"
+              fill="var(--col-text-primary)">Cecy</text>
+        <text x="80" y="51"
+              font-family="'Figtree', sans-serif"
+              font-size="9" font-weight="600"
+              fill="var(--col-text-muted)" letter-spacing="4">STAYS</text>
+      </svg>
     </a>
 
-    <!-- Desktop links: clean div, no spurious ARIA roles -->
     <div class="nav-links">
       <a href="#collection">Properties</a>
       <a href="#standards">House Rules</a>
       <a href="#about">About</a>
     </div>
 
-    <!-- Right cluster: CTA always visible + hamburger (mobile only) -->
     <div class="nav-right">
       <a href="#connect" class="nav-cta">Book a Stay</a>
       <button
@@ -1160,7 +1293,6 @@
     </div>
   </nav>
 
-  <!-- Mobile drawer -->
   <div
     class="nav-drawer"
     id="nav-drawer"
@@ -1173,7 +1305,6 @@
     <a href="#about"      class="nav-drawer-link">About</a>
     <a href="#connect"    class="nav-drawer-cta">Book a Stay</a>
   </div>
-
 
   <!-- ===========================================
        HERO
@@ -1189,7 +1320,7 @@
       </h1>
 
       <p class="t-body-lg hero-sub">
-        A curated collection near Downtown — private rooms, shop pods, tiny homes, container homes, and campers. Each space was built by someone who wanted to stay there.
+        A curated collection near Downtown — private rooms, shop pods, tiny homes, container homes, and campers. Each space was built to be worth coming back to.
       </p>
 
       <div class="hero-actions">
@@ -1197,7 +1328,7 @@
           Explore Stays
           <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </a>
-        <a href="https://www.airbnb.com" target="_blank" rel="noopener noreferrer" class="btn-ghost">
+        <a href="https://www.airbnb.com/users/profile/1469068484573002164?previous_page_name=PdpHomeMarketplace" target="_blank" rel="noopener noreferrer" class="btn-ghost">
           View on Airbnb
           <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </a>
@@ -1221,21 +1352,26 @@
 
     <div class="hero-visuals" aria-hidden="true">
       <div class="hero-tile hero-tile-1">
+        <img src="https://r2-uploader-production.up.railway.app/files/48c81510-e892-42a2-bef9-5e9b1df39f24.jpeg" alt="" loading="eager" fetchpriority="high" decoding="async" class="hero-tile-bg">
+        <div class="hero-tile-overlay" aria-hidden="true"></div>
         <div class="hero-tile-type">The Shop Pods</div>
         <div class="hero-tile-rating">&#9733; 4.93</div>
         <span class="hero-tile-label">Shop Pods</span>
       </div>
       <div class="hero-tile hero-tile-2">
+        <img src="https://r2-uploader-production.up.railway.app/files/a5e7280e-0112-46c6-b8b9-2a9b03029a00.jpeg" alt="" loading="eager" fetchpriority="high" decoding="async" class="hero-tile-bg">
+        <div class="hero-tile-overlay" aria-hidden="true"></div>
         <div class="hero-tile-rating">&#9733; 4.95</div>
         <span class="hero-tile-label">Private Rooms</span>
       </div>
       <div class="hero-tile hero-tile-3">
+        <img src="https://r2-uploader-production.up.railway.app/files/1f712ab4-d214-4ecf-93af-34720fdb2ca8.jpeg" alt="" loading="eager" fetchpriority="high" decoding="async" class="hero-tile-bg">
+        <div class="hero-tile-overlay" aria-hidden="true"></div>
         <div class="hero-tile-rating">&#9733; 4.91</div>
         <span class="hero-tile-label">Container Homes</span>
       </div>
     </div>
   </section>
-
 
   <!-- ===========================================
        COLLECTION
@@ -1250,7 +1386,7 @@
             Every kind of stay.<br>One way of doing it.
           </h2>
         </div>
-        <a href="https://www.airbnb.com" target="_blank" rel="noopener noreferrer" class="collection-view-all reveal reveal-d2">
+        <a href="https://www.airbnb.com/users/profile/1469068484573002164?previous_page_name=PdpHomeMarketplace" target="_blank" rel="noopener noreferrer" class="collection-view-all reveal reveal-d2">
           All listings on Airbnb
           <svg width="13" height="13" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </a>
@@ -1269,7 +1405,7 @@
               <p class="prop-card-type">Private</p>
               <h3 class="prop-card-name">Private Rooms</h3>
               <p class="prop-card-desc">Queen and king beds, art on the walls, hardwood floors. The rooms guests return to. Breakfast, Wi-Fi, pool access where available.</p>
-              <a href="https://www.airbnb.com" target="_blank" rel="noopener noreferrer" class="prop-card-link">Book on Airbnb <svg width="12" height="12" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+              <a href="https://www.airbnb.com/users/profile/1469068484573002164?previous_page_name=PdpHomeMarketplace" target="_blank" rel="noopener noreferrer" class="prop-card-link">Book on Airbnb <svg width="12" height="12" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
             </div>
           </div>
         </article>
@@ -1284,7 +1420,7 @@
               <p class="prop-card-type">Industrial Boutique</p>
               <h3 class="prop-card-name">The Shop Pods</h3>
               <p class="prop-card-desc">Dark walls. Pipe shelving. Large-format original art. Lockers. Headphones. Each pod has a distinct identity — none of them look alike.</p>
-              <a href="https://www.airbnb.com" target="_blank" rel="noopener noreferrer" class="prop-card-link">Book on Airbnb <svg width="12" height="12" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+              <a href="https://www.airbnb.com/users/profile/1469068484573002164?previous_page_name=PdpHomeMarketplace" target="_blank" rel="noopener noreferrer" class="prop-card-link">Book on Airbnb <svg width="12" height="12" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
             </div>
           </div>
         </article>
@@ -1299,7 +1435,7 @@
               <p class="prop-card-type">Entire Place</p>
               <h3 class="prop-card-name">Tiny Homes</h3>
               <p class="prop-card-desc">Designed to the door handle. Small footprint, full functionality. Each exterior makes a statement before you ever step inside.</p>
-              <a href="https://www.airbnb.com" target="_blank" rel="noopener noreferrer" class="prop-card-link">Book on Airbnb <svg width="12" height="12" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+              <a href="https://www.airbnb.com/users/profile/1469068484573002164?previous_page_name=PdpHomeMarketplace" target="_blank" rel="noopener noreferrer" class="prop-card-link">Book on Airbnb <svg width="12" height="12" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
             </div>
           </div>
         </article>
@@ -1314,7 +1450,7 @@
               <p class="prop-card-type">Entire Place</p>
               <h3 class="prop-card-name">Container Homes</h3>
               <p class="prop-card-desc">Steel shell, curated interior, pool access. Repurposed with purpose. Surprises you at the curb and keeps the promise inside.</p>
-              <a href="https://www.airbnb.com" target="_blank" rel="noopener noreferrer" class="prop-card-link">Book on Airbnb <svg width="12" height="12" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+              <a href="https://www.airbnb.com/users/profile/1469068484573002164?previous_page_name=PdpHomeMarketplace" target="_blank" rel="noopener noreferrer" class="prop-card-link">Book on Airbnb <svg width="12" height="12" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
             </div>
           </div>
         </article>
@@ -1329,7 +1465,7 @@
               <p class="prop-card-type">Entire Place</p>
               <h3 class="prop-card-name">Campers &amp; RVs</h3>
               <p class="prop-card-desc">Full bath, full kitchen, pool, Wi-Fi. Everything you'd expect from a house, parked.</p>
-              <a href="https://www.airbnb.com" target="_blank" rel="noopener noreferrer" class="prop-card-link">Book on Airbnb <svg width="12" height="12" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+              <a href="https://www.airbnb.com/users/profile/1469068484573002164?previous_page_name=PdpHomeMarketplace" target="_blank" rel="noopener noreferrer" class="prop-card-link">Book on Airbnb <svg width="12" height="12" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
             </div>
           </div>
         </article>
@@ -1344,14 +1480,13 @@
               <p class="prop-card-type">Shared Room</p>
               <h3 class="prop-card-name">Bed &amp; Breakfast</h3>
               <p class="prop-card-desc">The best value in the portfolio. Private bed, breakfast included, fast Wi-Fi, no hidden fees. Automatic discounts for extended stays.</p>
-              <a href="https://www.airbnb.com" target="_blank" rel="noopener noreferrer" class="prop-card-link">Book on Airbnb <svg width="12" height="12" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+              <a href="https://www.airbnb.com/users/profile/1469068484573002164?previous_page_name=PdpHomeMarketplace" target="_blank" rel="noopener noreferrer" class="prop-card-link">Book on Airbnb <svg width="12" height="12" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
             </div>
           </div>
         </article>
 
         </div><!-- /carousel-stage -->
 
-        <!-- Navigation: prev · dots · next -->
         <div class="carousel-controls">
           <button class="carousel-btn" id="carousel-prev" aria-label="Previous property type">
             <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true">
@@ -1377,7 +1512,6 @@
     </div>
   </section>
 
-
   <!-- ===========================================
        AMENITIES
   =========================================== -->
@@ -1396,33 +1530,74 @@
         </div>
 
         <div class="amenity-grid">
+          <!-- Breakfast -->
           <div class="amenity-item reveal">
-            <div class="amenity-icon" aria-hidden="true">&#9749;</div>
+            <div class="amenity-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M3 8h14v9a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4V8z"/>
+                <path d="M17 9h1a3 3 0 0 1 0 6h-1"/>
+                <path d="M7 4c0 1.5 2 1.5 2 3"/>
+                <path d="M11 4c0 1.5 2 1.5 2 3"/>
+              </svg>
+            </div>
             <div class="amenity-name">Breakfast Included</div>
             <div class="amenity-desc">Morning essentials in most properties. Start the day without thinking about it.</div>
           </div>
+          <!-- Wi-Fi -->
           <div class="amenity-item reveal reveal-d1">
-            <div class="amenity-icon" aria-hidden="true">&#9889;</div>
+            <div class="amenity-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M1.42 9a16 16 0 0 1 21.16 0"/>
+                <path d="M5 12.55a11 11 0 0 1 14.08 0"/>
+                <path d="M8.53 16.11a6 6 0 0 1 6.95 0"/>
+                <circle cx="12" cy="20" r="1" fill="currentColor" stroke="none"/>
+              </svg>
+            </div>
             <div class="amenity-name">Fast Wi-Fi</div>
             <div class="amenity-desc">High-speed throughout. Work from anywhere — it's not an afterthought.</div>
           </div>
+          <!-- Pool -->
           <div class="amenity-item reveal reveal-d2">
-            <div class="amenity-icon" aria-hidden="true">&#127946;</div>
+            <div class="amenity-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M2 8c1.5-2 3.5-2 5 0s3.5 2 5 0 3.5-2 5 0"/>
+                <path d="M2 13c1.5-2 3.5-2 5 0s3.5 2 5 0 3.5-2 5 0"/>
+                <path d="M2 18c1.5-2 3.5-2 5 0s3.5 2 5 0 3.5-2 5 0"/>
+              </svg>
+            </div>
             <div class="amenity-name">Pool Access</div>
             <div class="amenity-desc">Available across many properties. Phoenix heat requires it.</div>
           </div>
+          <!-- Parking -->
           <div class="amenity-item reveal reveal-d3">
-            <div class="amenity-icon" aria-hidden="true">&#128663;</div>
+            <div class="amenity-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="3" y="3" width="18" height="18" rx="3"/>
+                <path d="M9 17V7h5a3 3 0 0 1 0 6H9"/>
+              </svg>
+            </div>
             <div class="amenity-name">Free Parking</div>
             <div class="amenity-desc">On-site, always included. No apps, no meters.</div>
           </div>
+          <!-- No fees -->
           <div class="amenity-item reveal reveal-d4">
-            <div class="amenity-icon" aria-hidden="true">&#128176;</div>
+            <div class="amenity-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10"/>
+                <path d="M8 12l3 3 5-6"/>
+              </svg>
+            </div>
             <div class="amenity-name">No Hidden Fees</div>
             <div class="amenity-desc">The price shown is the price. Extended stays earn automatic discounts.</div>
           </div>
+          <!-- Location -->
           <div class="amenity-item reveal reveal-d5">
-            <div class="amenity-icon" aria-hidden="true">&#128205;</div>
+            <div class="amenity-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21 10c0 7-9 13-9 13S3 17 3 10a9 9 0 0 1 18 0z"/>
+                <circle cx="12" cy="10" r="3"/>
+              </svg>
+            </div>
             <div class="amenity-name">Near Downtown</div>
             <div class="amenity-desc">3 miles from the city center. Light rail nearby. Everything within reach.</div>
           </div>
@@ -1432,7 +1607,6 @@
     </div>
   </section>
 
-
   <!-- ===========================================
        STANDARDS
   =========================================== -->
@@ -1441,10 +1615,10 @@
 
       <span class="t-label eyebrow reveal">The Standards</span>
       <h2 class="t-h2 reveal reveal-d1" id="standards-heading">
-        How we keep<br>every stay right.
+        How things work<br>around here.
       </h2>
       <p class="standards-intro reveal reveal-d2">
-        These aren't warnings. They're the agreements that make a good experience possible for everyone — guests, neighbors, and the people who care for these properties. We ask the same from guests.
+        Every property here runs the same way — same standards, different character. This isn't fine print. It's how things work well for everyone who comes through.
       </p>
 
       <div class="standards-grid">
@@ -1452,37 +1626,60 @@
         <div class="standards-category reveal">
           <p class="t-label standards-cat-label">Arrival &amp; Departure</p>
           <div class="standards-rules">
-            <div class="rule-item"><div class="rule-dot" aria-hidden="true"></div><p class="rule-text">Check-in is after 3:00 PM. Early check-in may be available — request it in advance, not at the door.</p></div>
-            <div class="rule-item"><div class="rule-dot" aria-hidden="true"></div><p class="rule-text">Checkout is by 11:00 AM. Late checkout may be possible — ask the evening before.</p></div>
-            <div class="rule-item"><div class="rule-dot" aria-hidden="true"></div><p class="rule-text">Leave the space as you found it. A quick reset before you go is expected and appreciated.</p></div>
-            <div class="rule-item"><div class="rule-dot" aria-hidden="true"></div><p class="rule-text">Report any damage before checkout. Honesty is always better than a dispute after the fact.</p></div>
+            <div class="rule-item"><div class="rule-dot" aria-hidden="true"></div>
+              <p class="rule-text">Doors open at 3:00 PM — everything reset and ready. Need to come in earlier? Ask ahead, not at the door, and we'll do our best.</p>
+            </div>
+            <div class="rule-item"><div class="rule-dot" aria-hidden="true"></div>
+              <p class="rule-text">Checkout is by 11:00 AM. That window exists so the next guest gets the same fresh start you did. Late checkout sometimes works — just ask the night before.</p>
+            </div>
+            <div class="rule-item"><div class="rule-dot" aria-hidden="true"></div>
+              <p class="rule-text">A quick reset before you leave goes a long way. Dishes, trash, towels — nothing elaborate, just leave it the way you found it.</p>
+            </div>
+            <div class="rule-item"><div class="rule-dot" aria-hidden="true"></div>
+              <p class="rule-text">Noticed something off? Say so before checkout — it's an honest conversation and that's always easier than the alternative.</p>
+            </div>
           </div>
         </div>
 
         <div class="standards-category reveal reveal-d1">
-          <p class="t-label standards-cat-label">During Your Stay</p>
+          <p class="t-label standards-cat-label">Living Here</p>
           <div class="standards-rules">
-            <div class="rule-item"><div class="rule-dot" aria-hidden="true"></div><p class="rule-text">No smoking indoors. Designated areas are available outside. We keep everything clean for every guest.</p></div>
-            <div class="rule-item"><div class="rule-dot" aria-hidden="true"></div><p class="rule-text">Quiet hours from 10:00 PM to 8:00 AM. This is a community — sound carries, and neighbors matter.</p></div>
-            <div class="rule-item"><div class="rule-dot" aria-hidden="true"></div><p class="rule-text">No unregistered overnight guests. The number booked is the number that stays.</p></div>
-            <div class="rule-item"><div class="rule-dot" aria-hidden="true"></div><p class="rule-text">No parties or events. These are real homes — treat them as such.</p></div>
+            <div class="rule-item"><div class="rule-dot" aria-hidden="true"></div>
+              <p class="rule-text">All indoor spaces are smoke-free. It keeps everything clean and fair for whoever walks through the door next.</p>
+            </div>
+            <div class="rule-item"><div class="rule-dot" aria-hidden="true"></div>
+              <p class="rule-text">Quiet hours from 10:00 PM to 8:00 AM. Real neighborhood, real neighbors — worth respecting.</p>
+            </div>
+            <div class="rule-item"><div class="rule-dot" aria-hidden="true"></div>
+              <p class="rule-text">The number of guests booked is the number that stays. No unregistered overnight visitors, no exceptions.</p>
+            </div>
+            <div class="rule-item"><div class="rule-dot" aria-hidden="true"></div>
+              <p class="rule-text">These are homes, not event spaces. Keep it personal — gatherings and parties aren't what this is for.</p>
+            </div>
           </div>
         </div>
 
         <div class="standards-category reveal reveal-d2">
-          <p class="t-label standards-cat-label">Shared Spaces</p>
+          <p class="t-label standards-cat-label">Common Ground</p>
           <div class="standards-rules">
-            <div class="rule-item"><div class="rule-dot" aria-hidden="true"></div><p class="rule-text">Laundry is shared where available. Don't leave items unattended — the machine is for everyone.</p></div>
-            <div class="rule-item"><div class="rule-dot" aria-hidden="true"></div><p class="rule-text">Pool areas are shared. Keep them clean, keep the volume reasonable, respect the space.</p></div>
-            <div class="rule-item"><div class="rule-dot" aria-hidden="true"></div><p class="rule-text">Parking is assigned. Use your designated spot — not your neighbor's.</p></div>
-            <div class="rule-item"><div class="rule-dot" aria-hidden="true"></div><p class="rule-text">Pets are welcome in select listings. Confirm at booking — not all properties allow them.</p></div>
+            <div class="rule-item"><div class="rule-dot" aria-hidden="true"></div>
+              <p class="rule-text">Laundry is shared in most properties. Keep it moving — someone else is usually waiting and that's worth remembering.</p>
+            </div>
+            <div class="rule-item"><div class="rule-dot" aria-hidden="true"></div>
+              <p class="rule-text">The pool is for everyone on the property. Reasonable hours, reasonable noise — that's what makes it worth having.</p>
+            </div>
+            <div class="rule-item"><div class="rule-dot" aria-hidden="true"></div>
+              <p class="rule-text">Parking is assigned. Your spot is waiting when you pull in — use yours and leave the others free.</p>
+            </div>
+            <div class="rule-item"><div class="rule-dot" aria-hidden="true"></div>
+              <p class="rule-text">Pets are welcome in select properties. Just confirm before you book — not after — so everyone's on the same page.</p>
+            </div>
           </div>
         </div>
 
       </div>
     </div>
   </section>
-
 
   <!-- ===========================================
        ABOUT
@@ -1498,13 +1695,13 @@
         <div class="about-content">
           <span class="t-label eyebrow reveal">The People Behind It</span>
           <h2 class="t-h2 reveal reveal-d1" id="about-heading">
-            Built by people<br>who actually<br><em>stay here.</em>
+            Attention to detail<br>isn't the branding.<br><em>It's the operation.</em>
           </h2>
           <p class="about-body reveal reveal-d2">
-            Cecy and Mario started with one room and a straightforward standard: if it's not right, it doesn't go out. That approach built something that doesn't fit one category — rooms, campers, tiny homes, containers, shop pods — each one the result of the same question: <em>what would make us want to stay here?</em>
+            Cecy and Mario started with one room and a clear standard: if it's not right, it doesn't go out. That approach produced something that doesn't fit one category — rooms, campers, tiny homes, containers, shop pods — each one the result of genuine attention to what makes a space worth returning to.
           </p>
           <p class="about-body reveal reveal-d3">
-            They manage everything themselves — which is why problems get fixed the same day. Cecy handles the guest experience. Mario keeps the properties right. The breakfast is real. The Wi-Fi works. The ratings reflect the actual experience.
+            The operation is run personally, not by a management company. The breakfast is real. The Wi-Fi works. The 4.9★ rating across hundreds of reviews reflects the actual experience — not managed expectations.
           </p>
           <div class="about-cta reveal reveal-d4">
             <a href="#connect" class="btn-primary">
@@ -1517,7 +1714,6 @@
       </div>
     </div>
   </section>
-
 
   <!-- ===========================================
        CONNECT
@@ -1537,49 +1733,62 @@
         </div>
 
         <div class="connect-actions reveal reveal-d3">
-          <a href="https://www.airbnb.com" target="_blank" rel="noopener noreferrer" class="btn-white">
+          <a href="https://www.airbnb.com/users/profile/1469068484573002164?previous_page_name=PdpHomeMarketplace" target="_blank" rel="noopener noreferrer" class="btn-white">
             Browse All Listings
             <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
           </a>
-          <a href="mailto:hello@cecystays.com" class="btn-white-outline">Get in Touch</a>
+          <a href="https://www.airbnb.com/users/profile/1469068484573002164?previous_page_name=PdpHomeMarketplace" target="_blank" rel="noopener noreferrer" class="btn-white-outline">Get in Touch</a>
         </div>
 
       </div>
     </div>
   </section>
 
-
   <!-- ===========================================
        FOOTER
   =========================================== -->
   <footer class="footer" aria-label="Site footer">
     <div class="footer-inner">
-      <a href="#" class="footer-logo" aria-label="Cecy Stays — back to top">
-        <span class="footer-logo-mark">C·</span>Cecy Stays
-      </a>
+    <a href="#" class="footer-logo" aria-label="Cecy Stays — back to top">
+      <svg class="logo-mark" viewBox="0 0 210 60" xmlns="http://www.w3.org/2000/svg"
+           role="img" aria-label="Cecy Stays" fill="none">
+        <title>Cecy Stays</title>
+        <path d="M 48,15 A 24,24 0 1,0 48,45 L 40,38 A 13,13 0 1,1 40,22 Z"
+              fill="var(--col-primary)"/>
+        <circle cx="51" cy="30" r="2.5" fill="var(--col-primary)" opacity="0.6"/>
+        <line x1="68" y1="12" x2="68" y2="48"
+              stroke="var(--col-border)" stroke-width="1"/>
+        <text x="78" y="36"
+              font-family="'Playfair Display', Georgia, serif"
+              font-size="23" font-weight="700" font-style="italic"
+              fill="var(--col-text-primary)">Cecy</text>
+        <text x="80" y="51"
+              font-family="'Figtree', sans-serif"
+              font-size="9" font-weight="600"
+              fill="var(--col-text-muted)" letter-spacing="4">STAYS</text>
+      </svg>
+    </a>
       <nav class="footer-links" aria-label="Footer navigation">
         <a href="#collection">Properties</a>
         <a href="#standards">House Rules</a>
         <a href="#about">About</a>
-        <a href="/privacy-policy?dl=0">Privacy Policy</a>
-        <a href="/terms-of-service?dl=0">Terms of Service</a>
+        <a href="#" data-placeholder="privacy-policy" aria-disabled="true"
+           style="opacity:0.45; pointer-events:none;">Privacy Policy</a>
+        <a href="#" data-placeholder="terms-of-service" aria-disabled="true"
+           style="opacity:0.45; pointer-events:none;">Terms of Service</a>
       </nav>
       <p class="footer-legal">&copy; 2025 Cecy Stays. All rights reserved.</p>
     </div>
   </footer>
 
-
   <script>
     'use strict';
 
-    // === 1. NAV SCROLL STATE ===
     const mainNav = document.getElementById('main-nav');
     const onScroll = () => mainNav.classList.toggle('scrolled', window.scrollY > 50);
     window.addEventListener('scroll', onScroll, { passive: true });
     onScroll();
 
-
-    // === 2. HAMBURGER / DRAWER ===
     const hamburger = document.getElementById('nav-hamburger');
     const drawer    = document.getElementById('nav-drawer');
 
@@ -1601,10 +1810,8 @@
       drawer.classList.contains('open') ? closeDrawer() : openDrawer();
     });
 
-    // Close when any drawer link is tapped
     drawer.querySelectorAll('a').forEach(link => link.addEventListener('click', closeDrawer));
 
-    // Close on outside click
     document.addEventListener('click', (e) => {
       if (drawer.classList.contains('open') &&
           !drawer.contains(e.target) &&
@@ -1613,13 +1820,10 @@
       }
     });
 
-    // Close on scroll
     window.addEventListener('scroll', () => {
       if (drawer.classList.contains('open')) closeDrawer();
     }, { passive: true });
 
-
-    // === 3. SCROLL REVEAL ===
     const revealEls = document.querySelectorAll('.reveal');
     const revealObserver = new IntersectionObserver(
       (entries) => {
@@ -1634,8 +1838,6 @@
     );
     revealEls.forEach(el => revealObserver.observe(el));
 
-
-    // === 4. HERO TILE PERSPECTIVE TILT (desktop, respects reduced-motion) ===
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
     if (!prefersReducedMotion) {
@@ -1654,8 +1856,6 @@
       });
     }
 
-
-    // === 5. 3D CAROUSEL ===
     (function () {
       const stage    = document.getElementById('carousel-stage');
       const prevBtn  = document.getElementById('carousel-prev');
@@ -1667,46 +1867,40 @@
       const dots  = Array.from(dotsWrap.querySelectorAll('.carousel-dot'));
       const N     = cards.length;
 
-      const TRANS_MS   = 580;   // navigation transition duration
-      const FLOAT_PERIOD = 3400; // float cycle ms
-      const FLOAT_AMP    = 7;    // px up/down
-      const AUTO_MS      = 4800; // auto-advance ms
+      const TRANS_MS   = 580;
+      const FLOAT_PERIOD = 3400;
+      const FLOAT_AMP    = 7;
+      const AUTO_MS      = 4800;
 
-      let idx          = 0;          // current centre index
+      let idx          = 0;
       let transitioning = false;
       let floatRaf     = null;
       let floatStart   = 0;
       let autoTimer    = null;
       const reduced    = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-      /* ---------- transform string for a given relative position ---------- */
       function tx(rel, floatY) {
         floatY = floatY || 0;
         if (rel === 0) {
-          // Centre card: include float offset
           return `perspective(1200px) translateX(-50%) translateY(calc(-50% + ${floatY}px)) scale(1) rotateY(0deg)`;
         }
         const abs  = Math.min(Math.abs(rel), 2);
         const sign = rel < 0 ? -1 : 1;
         const mob  = window.innerWidth < 768;
-        // On mobile, push non-active cards fully off screen
         const xPct = mob ? sign * abs * 130 : sign * abs * 62;
         const sc   = (1 - abs * 0.16).toFixed(3);
         const ry   = (sign * abs * 20).toFixed(1);
         return `perspective(1200px) translateX(calc(-50% + ${xPct}%)) translateY(-50%) scale(${sc}) rotateY(${ry}deg)`;
       }
 
-      /* ---------- apply visual state to every card ---------- */
       function paint(floatY) {
         floatY = floatY || 0;
         const mob = window.innerWidth < 768;
         cards.forEach(function (card, i) {
-          // Normalised relative position in [-floor(N/2), +floor(N/2)]
           let rel = ((i - idx) % N + N) % N;
           if (rel > N / 2) rel -= N;
           const abs = Math.abs(rel);
 
-          // Hide cards more than 2 slots away
           if (abs > 2) {
             card.style.opacity      = '0';
             card.style.zIndex       = '0';
@@ -1716,7 +1910,6 @@
             return;
           }
 
-          // Mobile: only show centre card
           card.style.opacity      = (mob && abs > 0) ? '0' : String(+(1 - abs * 0.22).toFixed(2));
           card.style.zIndex       = String(10 - abs * 3);
           card.style.filter       = abs > 0 ? `blur(${(abs * 1.5).toFixed(1)}px)` : '';
@@ -1725,13 +1918,11 @@
         });
       }
 
-      /* ---------- float animation (RAF loop on active card only) ---------- */
       function floatTick() {
         if (transitioning || reduced) return;
         const elapsed = performance.now() - floatStart;
         const t       = (elapsed % FLOAT_PERIOD) / FLOAT_PERIOD;
         const fy      = -FLOAT_AMP * Math.sin(t * 2 * Math.PI);
-        // Only update the active card's transform
         cards[idx].style.transform = tx(0, fy);
         floatRaf = requestAnimationFrame(floatTick);
       }
@@ -1748,13 +1939,11 @@
         floatRaf = null;
       }
 
-      /* ---------- navigation ---------- */
       function goTo(target) {
         if (transitioning) return;
         transitioning = true;
         stopFloat();
 
-        // Enable CSS transitions for the swap
         cards.forEach(function (c) {
           c.style.transition = [
             `transform ${TRANS_MS}ms cubic-bezier(0.23,1,0.32,1)`,
@@ -1765,10 +1954,9 @@
 
         idx = ((target % N) + N) % N;
         updateDots();
-        paint(0); // paint without float for clean transition
+        paint(0);
 
         setTimeout(function () {
-          // Strip inline transitions; let CSS handle only box-shadow
           cards.forEach(function (c) { c.style.transition = ''; });
           transitioning = false;
           startFloat();
@@ -1778,18 +1966,15 @@
       function next() { goTo(idx + 1); }
       function prev() { goTo(idx - 1); }
 
-      /* ---------- dots ---------- */
       function updateDots() {
         dots.forEach(function (d, i) { d.classList.toggle('active', i === idx); });
       }
 
-      /* ---------- auto-advance ---------- */
       function resetAuto() {
         clearInterval(autoTimer);
         autoTimer = setInterval(next, AUTO_MS);
       }
 
-      /* ---------- touch / swipe ---------- */
       var tsX = 0, tsY = 0;
       stage.addEventListener('touchstart', function (e) {
         tsX = e.touches[0].clientX;
@@ -1806,37 +1991,30 @@
         resetAuto();
       }, { passive: true });
 
-      /* ---------- click non-active card → advance to it ---------- */
       cards.forEach(function (card, i) {
         card.addEventListener('click', function () {
           if (i !== idx) { goTo(i); resetAuto(); }
         });
       });
 
-      /* ---------- button + dot events ---------- */
       prevBtn.addEventListener('click', function () { prev(); resetAuto(); });
       nextBtn.addEventListener('click', function () { next(); resetAuto(); });
       dots.forEach(function (dot, i) {
         dot.addEventListener('click', function () { goTo(i); resetAuto(); });
       });
 
-      /* ---------- keyboard ---------- */
       document.addEventListener('keydown', function (e) {
         if (e.key === 'ArrowLeft')  { prev(); resetAuto(); }
         if (e.key === 'ArrowRight') { next(); resetAuto(); }
       });
 
-      /* ---------- pause auto on hover ---------- */
       stage.addEventListener('mouseenter', function () { clearInterval(autoTimer); });
       stage.addEventListener('mouseleave', resetAuto);
 
-      /* ---------- init ---------- */
       paint(0);
       startFloat();
       resetAuto();
-
-    }()); // end carousel IIFE
-
+    }());
   </script>
 
 </body>
